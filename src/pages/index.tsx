@@ -1,54 +1,32 @@
-import type { KeyboardEvent } from 'react'
+type ImageModule = typeof import('*.png')
+type ImportModuleFunction = () => Promise<ImageModule>
+
+const resolveImportGlobModule = async (modules: Record<string, ImportModuleFunction>) => {
+  const imports = Object.values(modules).map(importFn => importFn())
+  const loadedModules = await Promise.all(imports)
+  return loadedModules.map(module => module.default)
+}
 
 const IndexPage = () => {
-  const [name, setName] = useState('')
-  const navigate = useNavigate()
+  const [images, setImages] = useState<string[]>([])
 
-  const handleKeyDownEnter = useMemoizedFn((e: KeyboardEvent) => {
-    if (e && e.code === 'Enter' && name)
-      navigate(`/hi/${encodeURIComponent(name)}`)
-  })
+  const loadImage = useCallback(async () => {
+    const modules = import.meta.glob<ImageModule>('~/assets/*.png')
+    const images = await resolveImportGlobModule(modules)
+    setImages(images)
+  }, [])
 
-  const handleClickEnter = useMemoizedFn(() => {
-    if (name)
-      navigate(`/hi/${encodeURIComponent(name)}`)
-  })
+  useEffect(() => {
+    loadImage()
+  }, [loadImage])
 
   return (
     <div>
-      <div i-carbon-campsite text-4xl inline-block hover:op75 />
-      <p>
-        <a rel="noreferrer" href="https://github.com/flower-f/revitesse-lite" target="_blank">
-          ReVitesse Lite
-        </a>
-      </p>
-
-      <p>
-        <em text-sm op75>Opinionated Vite Starter Template</em>
-      </p>
-
-      <div py-4 />
-
-      <input
-        id="input"
-        placeholder="What's your name?"
-        type="text"
-        autoComplete="false"
-        p="x-4 y-2"
-        w="250px"
-        text="center"
-        bg="transparent"
-        border="~ rounded gray-200 dark:gray-700"
-        outline="none active:none"
-        onKeyDown={handleKeyDownEnter}
-        onChange={e => setName(e.target.value)}
-      />
-
-      <div>
-        <button m-3 text-sm className="btn" onClick={handleClickEnter} disabled={!name}>
-          Go
-        </button>
-      </div>
+      {
+        images.map((image, index) =>
+          <img src={image} alt={image} key={index} />,
+        )
+      }
     </div>
   )
 }

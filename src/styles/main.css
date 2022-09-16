@@ -6,6 +6,11 @@ body,
   margin: 0;
 }
 
+html {
+  overflow-x: hidden;
+  background: linear-gradient(90deg, #e7f8f2 0%, #d9f4ef 100%);
+}
+
 html.dark {
   background: #121212;
 }

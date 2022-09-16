@@ -5,6 +5,7 @@ specifiers:
   '@commitlint/cli': ^17.1.1
   '@commitlint/config-conventional': ^17.1.0
   '@iconify-json/carbon': ^1.1.7
+  '@iconify-json/fluent-emoji-flat': ^1.1.1
   '@testing-library/react': ^13.4.0
   '@types/node': ^18.7.16
   '@types/react': ^18.0.17
@@ -24,10 +25,12 @@ specifiers:
   eslint-plugin-react-hooks: ^4.6.0
   eslint-plugin-simple-import-sort: ^7.0.0
   husky: ^8.0.1
+  i18next: ^21.9.1
   jsdom: ^20.0.0
   lint-staged: ^13.0.3
   react: ^18.2.0
   react-dom: ^18.2.0
+  react-i18next: ^11.18.6
   react-router-dom: ^6.3.0
   rollup-plugin-visualizer: ^5.8.1
   sass: ^1.54.5
@@ -46,8 +49,10 @@ specifiers:
 
 dependencies:
   ahooks: registry.npmmirror.com/ahooks/3.7.1_react@18.2.0
+  i18next: registry.npmmirror.com/i18next/21.9.1
   react: registry.npmmirror.com/react/18.2.0
   react-dom: registry.npmmirror.com/react-dom/18.2.0_react@18.2.0
+  react-i18next: registry.npmmirror.com/react-i18next/11.18.6_4sidbwfhen5r7txudrvpua6nty
   react-router-dom: registry.npmmirror.com/react-router-dom/6.3.0_biqbaboplfbrettd7655fr4n2y
 
 devDependencies:
@@ -55,6 +60,7 @@ devDependencies:
   '@commitlint/cli': registry.npmmirror.com/@commitlint/cli/17.1.1_ts-node@10.9.1
   '@commitlint/config-conventional': registry.npmmirror.com/@commitlint/config-conventional/17.1.0
   '@iconify-json/carbon': registry.npmmirror.com/@iconify-json/carbon/1.1.7
+  '@iconify-json/fluent-emoji-flat': registry.npmmirror.com/@iconify-json/fluent-emoji-flat/1.1.1
   '@testing-library/react': registry.npmmirror.com/@testing-library/react/13.4.0_biqbaboplfbrettd7655fr4n2y
   '@types/node': registry.npmmirror.com/@types/node/18.7.16
   '@types/react': registry.npmmirror.com/@types/react/18.0.17
@@ -803,6 +809,14 @@ packages:
     resolution: {integrity: sha512-QULSpNWKaX4auIbjITDynfALdJYvOOy/xZb+aLOqCgvpBcmbz5tbqvow4r25FWtVsi4FHVpNQ8vyJZXsD1Hlxg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@iconify-json/carbon/-/carbon-1.1.7.tgz}
     name: '@iconify-json/carbon'
     version: 1.1.7
+    dependencies:
+      '@iconify/types': registry.npmmirror.com/@iconify/types/1.1.0
+    dev: true
+
+  registry.npmmirror.com/@iconify-json/fluent-emoji-flat/1.1.1:
+    resolution: {integrity: sha512-MN8fDSmFCbRMGbnh3/AxZ3gKWdBs9bEBetEbXiz9zXlS9GpDMmP/7mZGXeEKlbbl7V8o9gHNKYytuiP/Ukxc/g==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@iconify-json/fluent-emoji-flat/-/fluent-emoji-flat-1.1.1.tgz}
+    name: '@iconify-json/fluent-emoji-flat'
+    version: 1.1.1
     dependencies:
       '@iconify/types': registry.npmmirror.com/@iconify/types/1.1.0
     dev: true
@@ -4123,6 +4137,14 @@ packages:
     version: 2.0.2
     dev: true
 
+  registry.npmmirror.com/html-parse-stringify/3.0.1:
+    resolution: {integrity: sha512-KknJ50kTInJ7qIScF3jeaFRpMpE8/lfiTdzf/twXyPBLAGrLRTmkz3AdTnKeh40X8k9L2fdYwEp/42WGXIRGcg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/html-parse-stringify/-/html-parse-stringify-3.0.1.tgz}
+    name: html-parse-stringify
+    version: 3.0.1
+    dependencies:
+      void-elements: registry.npmmirror.com/void-elements/3.1.0
+    dev: false
+
   registry.npmmirror.com/html-tags/3.2.0:
     resolution: {integrity: sha512-vy7ClnArOZwCnqZgvv+ddgHgJiAFXe3Ge9ML5/mBctVJoUoYPCdxVucOywjDARn6CVoh3dRSFdPHy2sX80L0Wg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/html-tags/-/html-tags-3.2.0.tgz}
     name: html-tags
@@ -4187,6 +4209,14 @@ packages:
     engines: {node: '>=14'}
     hasBin: true
     dev: true
+
+  registry.npmmirror.com/i18next/21.9.1:
+    resolution: {integrity: sha512-ITbDrAjbRR73spZAiu6+ex5WNlHRr1mY+acDi2ioTHuUiviJqSz269Le1xHAf0QaQ6GgIHResUhQNcxGwa/PhA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/i18next/-/i18next-21.9.1.tgz}
+    name: i18next
+    version: 21.9.1
+    dependencies:
+      '@babel/runtime': registry.npmmirror.com/@babel/runtime/7.18.9
+    dev: false
 
   registry.npmmirror.com/iconv-lite/0.6.3:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/iconv-lite/-/iconv-lite-0.6.3.tgz}
@@ -5828,6 +5858,29 @@ packages:
       react: registry.npmmirror.com/react/18.2.0
       scheduler: registry.npmmirror.com/scheduler/0.23.0
 
+  registry.npmmirror.com/react-i18next/11.18.6_4sidbwfhen5r7txudrvpua6nty:
+    resolution: {integrity: sha512-yHb2F9BiT0lqoQDt8loZ5gWP331GwctHz9tYQ8A2EIEUu+CcEdjBLQWli1USG3RdWQt3W+jqQLg/d4rrQR96LA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/react-i18next/-/react-i18next-11.18.6.tgz}
+    id: registry.npmmirror.com/react-i18next/11.18.6
+    name: react-i18next
+    version: 11.18.6
+    peerDependencies:
+      i18next: '>= 19.0.0'
+      react: '>= 16.8.0'
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      '@babel/runtime': registry.npmmirror.com/@babel/runtime/7.18.9
+      html-parse-stringify: registry.npmmirror.com/html-parse-stringify/3.0.1
+      i18next: registry.npmmirror.com/i18next/21.9.1
+      react: registry.npmmirror.com/react/18.2.0
+      react-dom: registry.npmmirror.com/react-dom/18.2.0_react@18.2.0
+    dev: false
+
   registry.npmmirror.com/react-is/16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/react-is/-/react-is-16.13.1.tgz}
     name: react-is
@@ -7330,6 +7383,13 @@ packages:
       - supports-color
       - terser
     dev: true
+
+  registry.npmmirror.com/void-elements/3.1.0:
+    resolution: {integrity: sha512-Dhxzh5HZuiHQhbvTW9AMetFfBHDMYpo23Uo9btPXgdYP+3T5S+p+jgNy7spra+veYhBP2dCSgxR/i2Y02h5/6w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/void-elements/-/void-elements-3.1.0.tgz}
+    name: void-elements
+    version: 3.1.0
+    engines: {node: '>=0.10.0'}
+    dev: false
 
   registry.npmmirror.com/w3c-hr-time/1.0.2:
     resolution: {integrity: sha512-z8P5DvDNjKDoFIHK7q8r8lackT6l+jo/Ye3HOle7l9nICP9lf1Ci25fy9vHd0JOWewkIFzXIEig3TdKT7JQ5fQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/w3c-hr-time/-/w3c-hr-time-1.0.2.tgz}
