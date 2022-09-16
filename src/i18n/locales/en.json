@@ -4,5 +4,17 @@
     "lang": "Change language",
     "mode": "Change dark/light mode",
     "github": "Github link"
+  },
+  "footer": {
+    "assets": "Emojis made by",
+    "generator": "Emoji Generator",
+    "inspiration": "Strongly inspired by"
+  },
+  "index": {
+    "title": "Select the difficulty",
+    "easy": "Simple Pattern",
+    "medium": "Medium Pattern",
+    "difficult": "Difficult Pattern",
+    "hell": "Terrifying Pattern"
   }
 }

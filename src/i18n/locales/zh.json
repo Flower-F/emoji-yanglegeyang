@@ -4,5 +4,17 @@
     "lang": "更改语言",
     "mode": "切换明暗主题",
     "github": "Github 链接"
+  },
+  "footer": {
+    "assets": "素材制作",
+    "generator": "表情包生成器",
+    "inspiration": "灵感来源于"
+  },
+  "index": {
+    "title": "请选择难度",
+    "easy": "简单模式",
+    "medium": "中等模式",
+    "difficult": "困难模式",
+    "hell": "地狱模式"
   }
 }

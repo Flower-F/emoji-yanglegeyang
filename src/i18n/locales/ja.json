@@ -4,5 +4,17 @@
     "lang": "言語の変更",
     "mode": "シェーディングテーマの切り替え",
     "github": "Github リンク＃リンク＃"
+  },
+  "footer": {
+    "assets": "画像の作成",
+    "generator": "表情が生まれる",
+    "inspiration": "インスピレーション源"
+  },
+  "index": {
+    "title": "難易度を選択してください",
+    "easy": "単純モード",
+    "medium": "中モード",
+    "difficult": "困難モード",
+    "hell": "テロモード"
   }
 }
