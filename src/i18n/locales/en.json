@@ -15,6 +15,7 @@
     "easy": "Simple",
     "medium": "Medium",
     "difficult": "Hard",
-    "hell": "Terrifying"
+    "hell": "Terrifying",
+    "custom": "Custom"
   }
 }

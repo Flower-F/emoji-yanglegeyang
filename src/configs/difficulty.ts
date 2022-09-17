@@ -1,3 +1,5 @@
+import { GameDifficulty } from '~/constants'
+
 /** 简单 */
 export const easyGameConfig: GameConfig = {
   slotNum: 7,
@@ -39,13 +41,13 @@ export const hellGameConfig: GameConfig = {
 }
 
 /** 根据难度获取配置 */
-export const getGameConfig = (config: Difficulty) => {
+export const getGameConfig = (config: GameDifficulty) => {
   switch (config) {
-    case 'medium':
+    case GameDifficulty.MEDIUM:
       return mediumGameConfig
-    case 'hard':
+    case GameDifficulty.HARD:
       return hardGameConfig
-    case 'hell':
+    case GameDifficulty.HELL:
       return hellGameConfig
     default:
       return easyGameConfig

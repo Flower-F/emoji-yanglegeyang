@@ -2,7 +2,6 @@ import '~/i18n'
 
 import { Suspense } from 'react'
 import { Provider } from 'react-redux'
-import { useRoutes } from 'react-router-dom'
 import { PersistGate } from 'redux-persist/lib/integration/react'
 
 import Footer from '~/components/Footer'

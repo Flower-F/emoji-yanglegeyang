@@ -5,11 +5,11 @@ import { easyGameConfig } from '~/configs/difficulty'
 
 const namespace = 'game'
 
-interface IGameState {
+interface GameState {
   gameConfig: GameConfig
 }
 
-const initialState: IGameState = {
+const initialState: GameState = {
   gameConfig: easyGameConfig,
 }
 
@@ -17,7 +17,7 @@ export const gameSlice = createSlice({
   name: namespace,
   initialState,
   reducers: {
-    setGameConfig: (state: IGameState, action: PayloadAction<GameConfig>) => {
+    setGameConfig: (state: GameState, action: PayloadAction<GameConfig>) => {
       state.gameConfig = action.payload
     },
   },

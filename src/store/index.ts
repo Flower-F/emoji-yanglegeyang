@@ -5,6 +5,7 @@ import storage from 'redux-persist/lib/storage'
 
 import { counterSlice } from './counterSlice'
 import { gameSlice } from './gameSlice'
+import { imageSlice } from './imageSlice'
 
 const persistConfig = {
   key: 'global',
@@ -15,6 +16,7 @@ const persistConfig = {
 const reducersNeedPersist = combineReducers({
   counter: counterSlice.reducer,
   game: gameSlice.reducer,
+  image: imageSlice.reducer,
 })
 const persistedReducer = persistReducer<ReturnType<typeof reducersNeedPersist>>(persistConfig, reducersNeedPersist)
 
@@ -32,3 +34,4 @@ export const persistor = persistStore(store)
 
 export * from './counterSlice'
 export * from './gameSlice'
+export * from './imageSlice'

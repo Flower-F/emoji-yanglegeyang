@@ -3,6 +3,7 @@ import i18n, { resources } from '~/i18n'
 const Header = () => {
   const { toggleDark } = useDark()
   const { t } = useTranslation()
+  const navigate = useNavigate()
 
   const [language, setLanguage] = useLocalStorageState(
     'lang',
@@ -19,9 +20,11 @@ const Header = () => {
 
   return (
     <header flex justify-between items-center mb-2 pb-4 text="xl black dark:neutral-2">
-      <h1 text-lg font-extrabold tracking-wide flex items-center gap-2>
-        <img src="/favicon.svg" alt="logo" w-6 h-6 pb-1px />
-        {t('title')}
+      <h1>
+        <button flex items-center gap-2 text-lg font-extrabold tracking-wide onClick={() => navigate('/')}>
+          <img src="/favicon.svg" alt="logo" w-6 h-6 pb-1px />
+          {t('title')}
+        </button>
       </h1>
 
       <nav text-xl inline-flex items-center gap-3>
@@ -36,7 +39,7 @@ const Header = () => {
         <a
           icon-btn i-carbon-logo-github
           rel="noreferrer"
-          href="https://github.com/flower-f/emoji-generator"
+          href="https://github.com/Flower-F/emoji-yanglegeyang"
           target="_blank"
           title={t('header.github')}
         >

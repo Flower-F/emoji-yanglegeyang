@@ -3,11 +3,11 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const namespace = 'counter'
 
-interface ICounterState {
+interface CounterState {
   count: number
 }
 
-const initialState: ICounterState = {
+const initialState: CounterState = {
   count: 0,
 }
 
@@ -15,7 +15,7 @@ export const counterSlice = createSlice({
   name: namespace,
   initialState,
   reducers: {
-    setCount: (state: ICounterState, action: PayloadAction<number>) => {
+    setCount: (state: CounterState, action: PayloadAction<number>) => {
       state.count = action.payload
     },
   },

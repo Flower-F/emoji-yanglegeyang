@@ -45,6 +45,7 @@ declare global {
   const useFocusWithin: typeof import('ahooks')['useFocusWithin']
   const useFullscreen: typeof import('ahooks')['useFullscreen']
   const useFusionTable: typeof import('ahooks')['useFusionTable']
+  const useGame: typeof import('./src/hooks/useGame')['default']
   const useGetState: typeof import('ahooks')['useGetState']
   const useHistoryTravel: typeof import('ahooks')['useHistoryTravel']
   const useHover: typeof import('ahooks')['useHover']

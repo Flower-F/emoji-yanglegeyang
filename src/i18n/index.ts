@@ -6,11 +6,12 @@ import ja from './locales/ja.json'
 import zh from './locales/zh.json'
 
 export const resources = {
-  en: {
-    translation: en,
-  },
+  // 第一项是默认语言
   zh: {
     translation: zh,
+  },
+  en: {
+    translation: en,
   },
   ja: {
     translation: ja,

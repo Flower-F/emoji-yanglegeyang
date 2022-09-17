@@ -1,24 +1,18 @@
-type ImageModule = typeof import('*.png')
-type ImportModuleFunction = () => Promise<ImageModule>
+import { easyGameConfig } from '~/configs'
 
-const resolveImportGlobModule = async (modules: Record<string, ImportModuleFunction>) => {
-  const imports = Object.values(modules).map(importFn => importFn())
-  const loadedModules = await Promise.all(imports)
-  return loadedModules.map(module => module.default)
-}
-
-const Game = () => {
-  const [images, setImages] = useState<string[]>([])
-
-  const loadImage = useCallback(async () => {
-    const modules = import.meta.glob<ImageModule>('~/assets/*.png')
-    const images = await resolveImportGlobModule(modules)
-    setImages(images)
-  }, [])
+const GamePage = () => {
+  const { images } = useSelector(store => store.persist.image)
+  const { startGame } = useGame(easyGameConfig, images)
 
   useEffect(() => {
-    loadImage()
-  }, [loadImage])
+    startGame()
+  }, [startGame])
+
+  // const handleClick = () => {
+  //   console.log('levelBlocks', levelBlocks.current)
+  //   console.log('slotBlocks', slotBlocks.current)
+  //   console.log('randomBlocks', randomBlocks.current)
+  // }
 
   return (
     <div>
@@ -31,4 +25,4 @@ const Game = () => {
   )
 }
 
-export default Game
+export default GamePage
