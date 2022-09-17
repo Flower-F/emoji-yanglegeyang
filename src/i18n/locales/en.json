@@ -11,10 +11,10 @@
     "inspiration": "Strongly inspired by"
   },
   "index": {
-    "title": "Select the difficulty",
-    "easy": "Simple Pattern",
-    "medium": "Medium Pattern",
-    "difficult": "Difficult Pattern",
-    "hell": "Terrifying Pattern"
+    "title": "Select difficulty",
+    "easy": "Simple",
+    "medium": "Medium",
+    "difficult": "Difficult",
+    "hell": "Terrifying"
   }
 }
