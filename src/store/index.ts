@@ -4,17 +4,19 @@ import autoMergeLevel from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 import storage from 'redux-persist/lib/storage'
 
 import { counterSlice } from './counterSlice'
+import { gameSlice } from './gameSlice'
 
 const persistConfig = {
-  key: 'persist-key',
+  key: 'global',
   storage,
   stateReconciler: autoMergeLevel,
 }
 
-const reducers = combineReducers({
+const reducersNeedPersist = combineReducers({
   counter: counterSlice.reducer,
+  game: gameSlice.reducer,
 })
-const persistedReducer = persistReducer<ReturnType<typeof reducers>>(persistConfig, reducers)
+const persistedReducer = persistReducer<ReturnType<typeof reducersNeedPersist>>(persistConfig, reducersNeedPersist)
 
 export const store = configureStore({
   reducer: {
@@ -29,3 +31,4 @@ export const store = configureStore({
 export const persistor = persistStore(store)
 
 export * from './counterSlice'
+export * from './gameSlice'

@@ -13,3 +13,5 @@ interface GameConfig {
   /** 随机区块数（数组长度代表随机区数量，值表示每个随机区生产多少块） */
   randomBlocks: number[]
 }
+
+type Difficulty = 'easy' | 'medium' | 'hard' | 'hell'

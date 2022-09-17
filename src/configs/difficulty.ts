@@ -37,3 +37,17 @@ export const hellGameConfig: GameConfig = {
   levelNum: 10,
   randomBlocks: [8, 8],
 }
+
+/** 根据难度获取配置 */
+export const getGameConfig = (config: Difficulty) => {
+  switch (config) {
+    case 'medium':
+      return mediumGameConfig
+    case 'hard':
+      return hardGameConfig
+    case 'hell':
+      return hellGameConfig
+    default:
+      return easyGameConfig
+  }
+}
