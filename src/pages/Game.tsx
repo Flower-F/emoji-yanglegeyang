@@ -27,8 +27,8 @@ const GamePage = () => {
     totalBlockNum,
     disappearedBlockNum,
   } = useGame(easyGameConfig, images)
-
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const loadImage = useMemoizedFn(async () => {
     const modules = import.meta.glob<ImageModule>('~/assets/*.png')
@@ -73,20 +73,25 @@ const GamePage = () => {
 
   const containerStyle = useMemoizedFn(() => {
     return {
-      maxWidth: `${UNIT_SIZE * BOARD_UNIT + 16}px`,
+      maxWidth: `${UNIT_SIZE * BOARD_UNIT + 25}px`,
     } as CSSProperties
   })
 
   return (
     <div mx-auto flex flex-col justify-center items-center gap-4 style={containerStyle()}>
       {/* 分数部分 */}
-      <div flex justify-end w-full>
+      <div flex justify-between items-center w-full>
+        <div flex gap-2 text-white bg-teal-6 p="x2 y1.5" rounded>
+          <button i-carbon-previous-outline w-6 h-6 rounded-full cursor-pointer hover:text-teal-1 onClick={() => navigate(-1)}></button>
+          <div mx-2px w-2px bg-white></div>
+          <button i-carbon-reset w-6 h-6 cursor-pointer hover:text-teal-1 onClick={startGame}></button>
+        </div>
         <div className="btn" cursor-none select-none>{disappearedBlockNum} / {totalBlockNum}</div>
       </div>
       {
         gameStatus > GameStatus.READY
           ? (
-              <div border-teal-5 border-4 px-6px py-4 rounded-4 bg-teal-1>
+              <div border-teal-5 border-4 px-10px py-4 rounded-4 bg-teal-1>
                 {/* 分层部分 */}
                 <div relative style={boardStyle()}>
                   {levelBlocks.map((item, index) => (
@@ -99,20 +104,20 @@ const GamePage = () => {
                 </div>
                 {/* 随机部分 */}
                 <div mt-2 flex gap-2 flex-col pt-2>
-                    {randomBlocks.map((randomBlock, index) => (
-                      randomBlock.length > 0 && (
-                        <div key={index} flex gap-2 bg-teal-4 p-1 mx-auto rounded-2>
-                          {randomBlock.map((item, index) => (
-                            <div key={index} rounded-2 bg-white w-36px h-36px>
-                              {
-                                index === 0
-                                  ? <img src={item.emoji} w-full h-full rounded-2 alt={`Emoji${index}`} />
-                                  : <div w-full h-full bg-gray400 rounded-2></div>
-                              }
-                            </div>
-                          ))}
-                        </div>)
-                    ))}
+                  {randomBlocks.map((randomBlock, index) => (
+                    randomBlock.length > 0 && (
+                      <div key={index} flex gap-2 bg-teal-4 p-6px mx-auto rounded-2>
+                        {randomBlock.map((item, index) => (
+                          <div key={index} rounded-2 bg-white w-36px h-36px>
+                            {
+                              index === 0
+                                ? <img src={item.emoji} w-full h-full rounded-2 alt={`Emoji${index}`} />
+                                : <div w-full h-full bg-gray400 rounded-2></div>
+                            }
+                          </div>
+                        ))}
+                      </div>)
+                  ))}
                 </div>
             </div>
             )

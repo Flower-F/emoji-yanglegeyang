@@ -41,7 +41,7 @@ const useGame = (gameConfig: GameConfig, emojis: string[]) => {
   // const operationRecord: BlockType[] = []
 
   /** 初始化 */
-  const initChessBoard = (width: number, height: number) => {
+  const initBoard = (width: number, height: number) => {
     board = new Array<BoardUnitType[]>(width)
     for (let i = 0; i < width; i++) {
       board[i] = new Array(height)
@@ -52,7 +52,7 @@ const useGame = (gameConfig: GameConfig, emojis: string[]) => {
       }
     }
   }
-  initChessBoard(BOARD_UNIT, BOARD_UNIT)
+  initBoard(BOARD_UNIT, BOARD_UNIT)
 
   /** 给块绑定双向关系，用于确认哪些元素是当前可点击的 */
   const generateTwoWayRelation = (block: BlockType) => {
@@ -186,6 +186,7 @@ const useGame = (gameConfig: GameConfig, emojis: string[]) => {
 
   /** 开始游戏 */
   const startGame = () => {
+    initBoard(BOARD_UNIT, BOARD_UNIT)
     state.gameStatus = GameStatus.READY
     initGame()
     state.gameStatus = GameStatus.PLAYING
