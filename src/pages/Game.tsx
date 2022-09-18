@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react'
 
-import { BLOCK_UNIT, BlockStatus, BOARD_UNIT, easyGameConfig, GameStatus, UNIT_SIZE } from '~/constants'
+import { BLOCK_UNIT, BlockStatus, BOARD_UNIT, easyGameConfig, GameStatus } from '~/constants'
 import { setImages } from '~/store'
 import type { BlockType } from '~/types/block'
 
@@ -13,13 +13,16 @@ const resolveImportGlobModule = async (modules: Record<string, ImportModuleFunct
   return loadedModules.map(module => module.default)
 }
 
+/** 每个格子的宽高，单位 px */
+export const UNIT_SIZE = 14
+
 const GamePage = () => {
   const { images } = useSelector(store => store.persist.image)
   const {
     startGame,
     levelBlocks,
-    // slotBlocks,
-    // randomBlocks,
+    slotBlocks,
+    randomBlocks,
     gameStatus,
     totalBlockNum,
     disappearedBlockNum,
@@ -61,36 +64,80 @@ const GamePage = () => {
     } as CSSProperties
   })
 
-  const windowStyle = useMemoizedFn(() => {
+  const boardStyle = useMemoizedFn(() => {
     return {
       width: `${UNIT_SIZE * BOARD_UNIT}px`,
       height: `${UNIT_SIZE * BOARD_UNIT}px`,
     } as CSSProperties
   })
 
+  const containerStyle = useMemoizedFn(() => {
+    return {
+      maxWidth: `${UNIT_SIZE * BOARD_UNIT + 16}px`,
+    } as CSSProperties
+  })
+
   return (
-    <>
+    <div mx-auto flex flex-col justify-center items-center gap-4 style={containerStyle()}>
       {/* 分数部分 */}
-      <div flex justify-end mx-auto max-w-600px>
+      <div flex justify-end w-full>
         <div className="btn" cursor-none select-none>{disappearedBlockNum} / {totalBlockNum}</div>
       </div>
-      {/* 分层部分 */}
       {
         gameStatus > GameStatus.READY
-          ? <div relative mx-auto my-8 style={windowStyle()}>
-              {
-                levelBlocks.map((item, index) => (
-                  item.status === BlockStatus.READY && (
-                    <div absolute rounded-2 border-teal-4 border-2 p-2px key={index} style={levelBlockStyle(item)}>
-                      <img w-full h-full src={item.emoji} alt={`Emoji${index}`} style={levelBlockImageStyle(item)} />
-                    </div>
-                  )
-                ))
-              }
-             </div>
+          ? (
+              <div border-teal-5 border-4 px-6px py-4 rounded-4 bg-teal-1>
+                {/* 分层部分 */}
+                <div relative style={boardStyle()}>
+                  {levelBlocks.map((item, index) => (
+                    item.status === BlockStatus.READY && (
+                      <div absolute rounded-2 border-teal-4 border-2 p-1px key={index} style={levelBlockStyle(item)}>
+                        <img w-full h-full src={item.emoji} alt={`Emoji${index}`} style={levelBlockImageStyle(item)} />
+                      </div>
+                    )
+                  ))}
+                </div>
+                {/* 随机部分 */}
+                <div mt-2 flex gap-2 flex-col pt-2>
+                    {randomBlocks.map((randomBlock, index) => (
+                      randomBlock.length > 0 && (
+                        <div key={index} flex gap-2 bg-teal-4 p-1 mx-auto rounded-2>
+                          {randomBlock.map((item, index) => (
+                            <div key={index} rounded-2 bg-white w-36px h-36px>
+                              {
+                                index === 0
+                                  ? <img src={item.emoji} w-full h-full rounded-2 alt={`Emoji${index}`} />
+                                  : <div w-full h-full bg-gray400 rounded-2></div>
+                              }
+                            </div>
+                          ))}
+                        </div>)
+                    ))}
+                </div>
+            </div>
+            )
           : <div>Loading...</div>
       }
-    </>
+      {/* 槽 */}
+      <div
+        flex flex-wrap gap-2 justify-center items-center max-w-240px
+      bg-teal-1 p-4 rounded-4 border-teal-5 border-4
+      >
+        {
+          slotBlocks.map((item, index) => (
+            <div key={index}>
+              {
+                item
+                  ? <div w-10 h-10>
+                      <img src={item.emoji} w-full h-full rounded alt={`Emoji${index}`} />
+                    </div>
+                  : <div w-10 h-10 bg-gray400 rounded></div>
+              }
+            </div>
+          ))
+        }
+      </div>
+    </div>
   )
 }
 
