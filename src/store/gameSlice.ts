@@ -1,7 +1,8 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
 
-import { easyGameConfig } from '~/configs/difficulty'
+import { easyGameConfig } from '~/constants'
+import type { GameConfig } from '~/types/game'
 
 const namespace = 'game'
 

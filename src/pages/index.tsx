@@ -1,15 +1,5 @@
-import { getGameConfig } from '~/configs'
-import { GameDifficulty } from '~/constants'
-import { setGameConfig, setImages } from '~/store'
-
-type ImageModule = typeof import('*.png')
-type ImportModuleFunction = () => Promise<ImageModule>
-
-const resolveImportGlobModule = async (modules: Record<string, ImportModuleFunction>) => {
-  const imports = Object.values(modules).map(importFn => importFn())
-  const loadedModules = await Promise.all(imports)
-  return loadedModules.map(module => module.default)
-}
+import { GameDifficulty, getGameConfig } from '~/constants'
+import { setGameConfig } from '~/store'
 
 const IndexPage = () => {
   const { t } = useTranslation()
@@ -24,16 +14,6 @@ const IndexPage = () => {
   const goToCustomPage = useMemoizedFn(() => {
     navigate('/custom')
   })
-
-  const loadImage = useMemoizedFn(async () => {
-    const modules = import.meta.glob<ImageModule>('~/assets/*.png')
-    const images = await resolveImportGlobModule(modules)
-    dispatch(setImages(images))
-  })
-
-  useEffect(() => {
-    loadImage()
-  }, [loadImage])
 
   return (
     <div flex flex-col justify-center items-center h-70vh px-6>

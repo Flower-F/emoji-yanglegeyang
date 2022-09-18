@@ -6,10 +6,8 @@ export interface GameConfig {
   composedNum: number
   /** 每层块数（大致） */
   blockNumPerLevel: number
-  /** 边界收缩步长  */
-  borderStep: number
   /** 总层数（最小为 2） */
   levelNum: number
-  /** 随机区块数（数组长度代表随机区数量，值表示每个随机区生产多少块） */
+  /** 随机区块数（数组长度代表有多少条随机区，值表示每条随机区有多少块） */
   randomBlocks: number[]
 }

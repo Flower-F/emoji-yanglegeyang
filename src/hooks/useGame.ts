@@ -1,28 +1,32 @@
 import { random, shuffle } from 'lodash-es'
 
-import { BlockStatus, GameStatus } from '~/constants'
+import { BLOCK_UNIT, BlockStatus, BOARD_UNIT, GameStatus } from '~/constants'
 import type { BlockType, BoardUnitType } from '~/types/block'
 import type { GameConfig } from '~/types/game'
 
-// 总共划分 24 x 24 的格子，每个块占 3 x 3 的格子，生成的起始 x 坐标和 y 坐标范围均为 0 ~ 20
-const BOARD_UNIT = 24
-const BLOCK_UNIT = 3
-// 每个格子的宽高
-const UNIT_SIZE = 14
-
-const useGame = (gameConfig: GameConfig, emojis: string[], levelBoardDom: HTMLDivElement | null = null) => {
-  // 每层的块
-  const levelBlocks = useRef<BlockType[]>([])
-  // 插槽区
-  const slotBlocks = useRef<(BlockType | null)[]>([])
-  // 随机区块
-  const randomBlocks = useRef<BlockType[][]>([])
-  // 总块数
-  const totalBlockNum = useRef(0)
-  // 消除的块数
-  // const disappearedBlockNum = useRef(0)
-  // 当前游戏状态
-  const gameStatus = useRef(GameStatus.READY)
+const useGame = (gameConfig: GameConfig, emojis: string[]) => {
+  // 统一管理所有响应式状态
+  const state = useReactive<{
+    /** 每层的块 */
+    levelBlocks: BlockType[]
+    /** 插槽区 */
+    slotBlocks: (BlockType | null)[]
+    /** 随机区块 */
+    randomBlocks: BlockType[][]
+    /** 总块数 */
+    totalBlockNum: number
+    /** 消除的块数 */
+    disappearedBlockNum: number
+    /** 当前游戏状态 */
+    gameStatus: GameStatus
+  }>({
+        levelBlocks: [],
+        slotBlocks: [],
+        randomBlocks: [],
+        totalBlockNum: 0,
+        disappearedBlockNum: 0,
+        gameStatus: GameStatus.READY,
+      })
 
   // 保存所有块（包括随机块）
   const allBlocks: BlockType[] = []
@@ -32,17 +36,31 @@ const useGame = (gameConfig: GameConfig, emojis: string[], levelBoardDom: HTMLDi
   // const currentSlotNum = 0
 
   // 保存棋盘每个格子的状态（下标为格子起始点横纵坐标）
-  const board: BoardUnitType[][] = new Array(BOARD_UNIT).fill(null).map(() => new Array<BoardUnitType>(BOARD_UNIT).fill({ blocks: [] }))
+  let board: BoardUnitType[][] = []
   // 操作记录（存储点击的块）
   // const operationRecord: BlockType[] = []
 
+  /** 初始化 */
+  const initChessBoard = (width: number, height: number) => {
+    board = new Array<BoardUnitType[]>(width)
+    for (let i = 0; i < width; i++) {
+      board[i] = new Array(height)
+      for (let j = 0; j < height; j++) {
+        board[i][j] = {
+          blocks: [],
+        }
+      }
+    }
+  }
+  initChessBoard(BOARD_UNIT, BOARD_UNIT)
+
   /** 给块绑定双向关系，用于确认哪些元素是当前可点击的 */
   const generateTwoWayRelation = (block: BlockType) => {
-    // 确定该块附近的格子坐标范围
-    const minX = Math.max(block.x - BLOCK_UNIT, 0)
-    const minY = Math.max(block.y - BLOCK_UNIT, 0)
-    const maxX = Math.min(block.x + BLOCK_UNIT, BOARD_UNIT - BLOCK_UNIT - 1)
-    const maxY = Math.min(block.y + BLOCK_UNIT, BOARD_UNIT - BLOCK_UNIT - 1)
+    // 可能产生重叠的范围
+    const minX = Math.max(block.x - BLOCK_UNIT + 1, 0)
+    const minY = Math.max(block.y - BLOCK_UNIT + 1, 0)
+    const maxX = Math.min(block.x + BLOCK_UNIT, BOARD_UNIT - BLOCK_UNIT)
+    const maxY = Math.min(block.y + BLOCK_UNIT, BOARD_UNIT - BLOCK_UNIT)
 
     // 遍历该块附近的格子
     let maxLevel = 0
@@ -69,8 +87,8 @@ const useGame = (gameConfig: GameConfig, emojis: string[], levelBoardDom: HTMLDi
   }
 
   /** 生成块坐标  */
-  const generateBlocksPosition = (blocks: BlockType[], minX: number, minY: number, maxX: number, maxY: number) => {
-    // 保证同批次块不会完全重叠
+  const generateLevelBlockPosition = (blocks: BlockType[], { minX, minY, maxX, maxY }: { minX: number; minY: number; maxX: number; maxY: number }) => {
+    // 保证同一层块不会完全重叠
     const positionSet = new Set<string>()
     blocks.forEach((block) => {
       let newX, newY, key
@@ -90,34 +108,28 @@ const useGame = (gameConfig: GameConfig, emojis: string[], levelBoardDom: HTMLDi
     })
   }
 
-  /** 游戏初始化 */
+  /** 初始化槽、随机区、分层区三部分数据 */
   const initGame = () => {
-    // 设置 levelBoard 宽度
-    if (levelBoardDom) {
-      levelBoardDom.style.width = `${UNIT_SIZE * BOARD_UNIT}px`
-      levelBoardDom.style.height = `${UNIT_SIZE * BOARD_UNIT}px`
-    }
-
-    // 1. 规划块数
-    // 总块数必须是该值的倍数，才能确保可以生成答案
+    // 1. 规划块数：总块数必须是该值的倍数，才能确保可以生成答案
     const blockNumUnit = gameConfig.composedNum * emojis.length
     // 随机生成的总块数
     const totalRandomBlockNum = gameConfig.randomBlocks.reduce((prev, cur) => prev + cur)
+
     // 计算需要的最小块数
     const minBlockNum = gameConfig.levelNum * gameConfig.blockNumPerLevel + totalRandomBlockNum
     // 补齐到 blockNumUnit 的倍数
-    totalBlockNum.current = minBlockNum
-    if (minBlockNum % blockNumUnit !== 0) {
-      totalBlockNum.current = (Math.floor(minBlockNum / blockNumUnit) + 1) * blockNumUnit
+    state.totalBlockNum = minBlockNum
+    if (state.totalBlockNum % blockNumUnit !== 0) {
+      state.totalBlockNum = (Math.floor(minBlockNum / blockNumUnit) + 1) * blockNumUnit
     }
 
     // 2. 计算随机部分的块
     const emojiBlocks: string[] = []
-    for (let i = 0; i < totalBlockNum.current; i++) {
+    for (let i = 0; i < state.totalBlockNum; i++) {
       emojiBlocks.push(emojis[i % emojis.length])
     }
     const randomEmojis = shuffle(emojiBlocks)
-    for (let i = 0; i < totalBlockNum.current; i++) {
+    for (let i = 0; i < state.totalBlockNum; i++) {
       const newBlock: BlockType = {
         id: i,
         x: 0,
@@ -142,58 +154,41 @@ const useGame = (gameConfig: GameConfig, emojis: string[], levelBoardDom: HTMLDi
       }
     })
 
-    // 剩余块数，用于层级部分处理
-    let restBlockNum = totalBlockNum.current - totalRandomBlockNum
+    // 剩余块数用于层级部分处理
+    let restBlockNum = state.totalBlockNum - totalRandomBlockNum
 
     // 3. 计算层级部分的块
     const levelBlocks: BlockType[] = []
-    let [minX, maxX, minY, maxY] = [0, BOARD_UNIT - BLOCK_UNIT, 0, BOARD_UNIT - BLOCK_UNIT]
+    const [minX, maxX, minY, maxY] = [0, BOARD_UNIT - BLOCK_UNIT, 0, BOARD_UNIT - BLOCK_UNIT]
     for (let i = 0; i < gameConfig.levelNum; i++) {
       let nextBlockNum = Math.min(gameConfig.blockNumPerLevel, restBlockNum)
       // 最后一批，分配剩下的所有块
       if (i === gameConfig.levelNum - 1) {
         nextBlockNum = restBlockNum
       }
-      // 边界收缩
-      if (gameConfig.borderStep > 0) {
-        const remainder = i % 4
-        if (remainder === 0) {
-          minX += gameConfig.borderStep
-        } else if (remainder === 1) {
-          maxY -= gameConfig.borderStep
-        } else if (remainder === 2) {
-          minY += gameConfig.borderStep
-        } else {
-          maxX -= gameConfig.borderStep
-        }
-      }
+      // 下一次要分配的块
       const nextBlocks = allBlocks.slice(pos, pos + nextBlockNum)
       levelBlocks.push(...nextBlocks)
       // 生成块坐标
-      generateBlocksPosition(nextBlocks, minX, minY, maxX, maxY)
+      generateLevelBlockPosition(nextBlocks, { minX, minY, maxX, maxY })
 
-      pos = pos + nextBlockNum
+      pos += nextBlockNum
       restBlockNum -= nextBlockNum
       if (restBlockNum <= 0) {
         break
       }
     }
 
-    return {
-      levelBlocks,
-      slotBlocks: new Array<BlockType | null>(gameConfig.slotNum).fill(null),
-      randomBlocks,
-    }
+    state.levelBlocks = levelBlocks
+    state.slotBlocks = new Array<BlockType | null>(gameConfig.slotNum).fill(null)
+    state.randomBlocks = randomBlocks
   }
 
   /** 开始游戏 */
   const startGame = () => {
-    gameStatus.current = GameStatus.READY
-    const result = initGame()
-    levelBlocks.current = result.levelBlocks
-    slotBlocks.current = result.slotBlocks
-    randomBlocks.current = result.randomBlocks
-    gameStatus.current = GameStatus.PLAYING
+    state.gameStatus = GameStatus.READY
+    initGame()
+    state.gameStatus = GameStatus.PLAYING
   }
 
   /** 点击块事件 */
@@ -250,10 +245,12 @@ const useGame = (gameConfig: GameConfig, emojis: string[], levelBoardDom: HTMLDi
 
   return {
     startGame: useMemoizedFn(startGame),
-    levelBlocks,
-    slotBlocks,
-    randomBlocks,
-    gameStatus,
+    levelBlocks: state.levelBlocks,
+    slotBlocks: state.slotBlocks,
+    randomBlocks: state.randomBlocks,
+    gameStatus: state.gameStatus,
+    totalBlockNum: state.totalBlockNum,
+    disappearedBlockNum: state.disappearedBlockNum,
   }
 }
 
