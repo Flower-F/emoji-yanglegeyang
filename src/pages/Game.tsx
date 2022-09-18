@@ -26,6 +26,7 @@ const GamePage = () => {
     gameStatus,
     totalBlockNum,
     disappearedBlockNum,
+    clickBlock,
   } = useGame(easyGameConfig, images)
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -94,30 +95,35 @@ const GamePage = () => {
               <div border-teal-5 border-4 px-10px py-4 rounded-4 bg-teal-1>
                 {/* 分层部分 */}
                 <div relative style={boardStyle()}>
-                  {levelBlocks.map((item, index) => (
-                    item.status === BlockStatus.READY && (
-                      <div absolute rounded-2 border-teal-4 border-2 p-1px key={index} style={levelBlockStyle(item)}>
-                        <img w-full h-full src={item.emoji} alt={`Emoji${index}`} style={levelBlockImageStyle(item)} />
-                      </div>
-                    )
-                  ))}
+                  {
+                    levelBlocks.map((item, index) => (
+                      item.status === BlockStatus.READY && (
+                        <button absolute rounded-2 border-teal-4 border-2 p-1px key={index} style={levelBlockStyle(item)} onClick={() => clickBlock(item)}>
+                          <img w-full h-full src={item.emoji} alt={`Emoji${index}`} style={levelBlockImageStyle(item)} />
+                        </button>
+                      )
+                    ))
+                  }
                 </div>
                 {/* 随机部分 */}
                 <div mt-2 flex gap-2 flex-col pt-2>
-                  {randomBlocks.map((randomBlock, index) => (
-                    randomBlock.length > 0 && (
-                      <div key={index} flex gap-2 bg-teal-4 p-6px mx-auto rounded-2>
-                        {randomBlock.map((item, index) => (
-                          <div key={index} rounded-2 bg-white w-36px h-36px>
-                            {
-                              index === 0
-                                ? <img src={item.emoji} w-full h-full rounded-2 alt={`Emoji${index}`} />
-                                : <div w-full h-full bg-gray400 rounded-2></div>
-                            }
-                          </div>
-                        ))}
-                      </div>)
-                  ))}
+                  {
+                    randomBlocks.map((randomBlock, outIndex) => (
+                      randomBlock.length > 0 && (
+                        <div key={outIndex} flex gap-2 bg-teal-4 p-6px mx-auto rounded-2>
+                          {randomBlock.map((item, index) => (
+                            <button key={index} rounded-2 bg-white w-36px h-36px onClick={() => clickBlock(item, outIndex)}>
+                              {
+                                index === 0
+                                  ? <img src={item.emoji} w-full h-full rounded-2 alt={`Emoji${index}`} />
+                                  : <div w-full h-full bg-gray400 rounded-2></div>
+                                }
+                            </button>
+                          ))}
+                        </div>
+                      )
+                    ))
+                  }
                 </div>
             </div>
             )
@@ -128,19 +134,17 @@ const GamePage = () => {
         flex flex-wrap gap-2 justify-center items-center max-w-240px
       bg-teal-1 p-4 rounded-4 border-teal-5 border-4
       >
-        {
-          slotBlocks.map((item, index) => (
-            <div key={index}>
-              {
-                item
-                  ? <div w-10 h-10>
-                      <img src={item.emoji} w-full h-full rounded alt={`Emoji${index}`} />
+        {slotBlocks.map((item, index) => (
+          <div key={index}>
+            {
+              item
+                ? <div w-10 h-10>
+                    <img src={item.emoji} w-full h-full rounded alt={`Emoji${index}`} />
                     </div>
-                  : <div w-10 h-10 bg-gray400 rounded></div>
+                : <div w-10 h-10 bg-gray400 rounded></div>
               }
-            </div>
-          ))
-        }
+          </div>
+        ))}
       </div>
     </div>
   )

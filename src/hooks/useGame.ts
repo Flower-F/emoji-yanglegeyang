@@ -1,4 +1,4 @@
-import { random, shuffle } from 'lodash-es'
+import { random, remove, shuffle } from 'lodash-es'
 
 import { BLOCK_UNIT, BlockStatus, BOARD_UNIT, GameStatus } from '~/constants'
 import type { BlockType, BoardUnitType } from '~/types/block'
@@ -19,6 +19,8 @@ const useGame = (gameConfig: GameConfig, emojis: string[]) => {
     disappearedBlockNum: number
     /** 当前游戏状态 */
     gameStatus: GameStatus
+    /** 当前占据的槽数 */
+    currentSlotNum: number
   }>({
         levelBlocks: [],
         slotBlocks: [],
@@ -26,19 +28,17 @@ const useGame = (gameConfig: GameConfig, emojis: string[]) => {
         totalBlockNum: 0,
         disappearedBlockNum: 0,
         gameStatus: GameStatus.READY,
+        currentSlotNum: 0,
       })
 
-  // 保存所有块（包括随机块）
+  // 保存所有块（包括随机区、分层区）
   const allBlocks: BlockType[] = []
   const blockData: Record<number, BlockType> = {}
-
-  // 当前占据的槽数
-  // const currentSlotNum = 0
 
   // 保存棋盘每个格子的状态（下标为格子起始点横纵坐标）
   let board: BoardUnitType[][] = []
   // 操作记录（存储点击的块）
-  // const operationRecord: BlockType[] = []
+  const operationRecord: BlockType[] = []
 
   /** 初始化 */
   const initBoard = (width: number, height: number) => {
@@ -188,70 +188,88 @@ const useGame = (gameConfig: GameConfig, emojis: string[]) => {
   const startGame = () => {
     initBoard(BOARD_UNIT, BOARD_UNIT)
     state.gameStatus = GameStatus.READY
+    state.disappearedBlockNum = 0
+    state.currentSlotNum = 0
     initGame()
     state.gameStatus = GameStatus.PLAYING
   }
 
   /** 点击块事件 */
-  // const clickBlock = (block: BlockType, randomIndex = -1, force = false) => {
-  //   if (currentSlotNum >= gameConfig.slotNum || block.status !== BlockStatus.READY || (block.blocksHigherThan.length > 0 && !force)) {
-  //     return
-  //   }
+  const clickBlock = (block: BlockType, randomIndex = -1, force = false) => {
+    if (state.currentSlotNum >= gameConfig.slotNum || block.status !== BlockStatus.READY || (block.blocksLowerThan.length > 0 && !force)) {
+      return
+    }
 
-  //   // 移除当前元素
-  //   block.status = BlockStatus.CLICKED
-  //   if (randomIndex >= 0) {
-  //     // 移除所点击的随机区域的第一个元素
-  //     randomBlocks.current[randomIndex] = randomBlocks.current[randomIndex].slice(1)
-  //   } else {
-  //     // 非随机区才可撤回
-  //     operationRecord.push(block)
-  //     // 移除覆盖关系
-  //     block.blocksHigherThan.forEach((blockHigher) => {
-  //       remove(blockHigher.blocksLowerThan, blockLower => blockLower.id === block.id)
-  //     })
-  //   }
+    // 设置状态
+    block.status = BlockStatus.CLICKED
+    if (randomIndex >= 0) {
+      // 移除所点击的随机区域的第一个元素
+      state.randomBlocks[randomIndex].shift()
+    } else {
+      // 非随机区才可撤回
+      operationRecord.push(block)
+      // 移除覆盖关系
+      block.blocksHigherThan.forEach((blockHigher) => {
+        remove(blockHigher.blocksLowerThan, blockLower => blockLower.id === block.id)
+      })
+    }
 
-  //   // 新元素加入插槽
-  //   slotBlocks.current[currentSlotNum] = block
-  //   // 检查是否可以消除
-  //   const map = new Map<string, number>()
-  //   slotBlocks.current.forEach((slotBlock) => {
-  //     const emoji = slotBlock?.emoji
-  //     if (emoji) {
-  //       map.set(emoji, (map.get(emoji) || 0) + 1)
-  //     }
-  //   })
+    // 新元素加入插槽
+    state.slotBlocks[state.currentSlotNum] = block
 
-  //   const newSlotBlocks = new Array<BlockType | null>(gameConfig.slotNum).fill(null)
-  //   newSlotBlocks.forEach((slotBlock) => {
-  //     if (slotBlock && map.get(slotBlock.emoji) >= gameConfig.composedNum) {
-  //       slotBlock.status = BlockStatus.DISAPPEARED
-  //       disappearedBlockNum.current++
-  //       operationRecord.length = 0
-  //     }
-  //     newSlotBlocks[currentSlotNum + 1] = slotBlock
-  //   })
-  //   currentSlotNum = currentSlotNum + 1
+    const notNullSlotBlocks = state.slotBlocks.filter(
+      slotBlock => !!slotBlock,
+    )
 
-  //   if (currentSlotNum >= gameConfig.slotNum) {
-  //     gameStatus.current = GameStatus.FAILED
-  //     // 你输了
-  //   }
-  //   if (disappearedBlockNum >= totalBlockNum) {
-  //     gameStatus.current = GameStatus.SUCCESS
-  //     // 你赢了
-  //   }
-  // }
+    // 检查是否形成了可消除组合，并进行消除
+    const map = new Map<string, number>()
+    notNullSlotBlocks.forEach((slotBlock) => {
+      const emoji = slotBlock?.emoji
+      if (emoji) {
+        map.set(emoji, (map.get(emoji) || 0) + 1)
+      }
+    })
+    let newSlotNum = 0
+    const newSlotBlocks = new Array<BlockType | null>(gameConfig.slotNum).fill(null)
+    notNullSlotBlocks.forEach((slotBlock, index) => {
+      if (slotBlock) {
+        newSlotNum++
+        const emojiNum = map.get(slotBlock.emoji)
+        if (emojiNum !== undefined && emojiNum >= gameConfig.composedNum) {
+          // 消除元素
+          slotBlock.status = BlockStatus.DISAPPEARED
+          state.disappearedBlockNum++
+          // 避免撤回
+          operationRecord.length = 0
+        } else {
+          newSlotBlocks[index] = slotBlock
+        }
+      }
+    })
+    state.slotBlocks = newSlotBlocks
+    state.currentSlotNum = newSlotNum
+
+    if (state.currentSlotNum >= gameConfig.slotNum) {
+      state.gameStatus = GameStatus.FAILED
+      // 你输了
+      // console.log('fail')
+    }
+    if (state.disappearedBlockNum >= state.totalBlockNum) {
+      state.gameStatus = GameStatus.SUCCESS
+      // 你赢了
+      // console.log('win')
+    }
+  }
 
   return {
-    startGame: useMemoizedFn(startGame),
     levelBlocks: state.levelBlocks,
     slotBlocks: state.slotBlocks,
     randomBlocks: state.randomBlocks,
     gameStatus: state.gameStatus,
     totalBlockNum: state.totalBlockNum,
     disappearedBlockNum: state.disappearedBlockNum,
+    startGame: useMemoizedFn(startGame),
+    clickBlock: useMemoizedFn(clickBlock),
   }
 }
 
