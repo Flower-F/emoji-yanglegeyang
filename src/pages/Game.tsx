@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react'
 
-import { BLOCK_UNIT, BlockStatus, BOARD_UNIT, easyGameConfig, GameStatus } from '~/constants'
+import { BLOCK_UNIT, BlockStatus, BOARD_UNIT, GameStatus } from '~/constants'
 import { setImages } from '~/store'
 import type { BlockType } from '~/types/block'
 
@@ -18,16 +18,17 @@ export const UNIT_SIZE = 14
 
 const GamePage = () => {
   const { images } = useSelector(store => store.persist.image)
+  const { gameConfig } = useSelector(store => store.persist.game)
   const {
-    startGame,
     levelBlocks,
     slotBlocks,
     randomBlocks,
     gameStatus,
     totalBlockNum,
     disappearedBlockNum,
+    startGame,
     clickBlock,
-  } = useGame(easyGameConfig, images)
+  } = useGame(gameConfig, images)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -44,7 +45,9 @@ const GamePage = () => {
   }, [images.length, loadImage])
 
   useEffect(() => {
-    startGame()
+    if (images.length > 0) {
+      startGame()
+    }
   }, [startGame, images])
 
   const levelBlockStyle = useMemoizedFn((item: BlockType) => {
@@ -90,7 +93,7 @@ const GamePage = () => {
         <div className="btn" cursor-none select-none>{disappearedBlockNum} / {totalBlockNum}</div>
       </div>
       {
-        gameStatus > GameStatus.READY
+        gameStatus > GameStatus.READY && images.length > 0
           ? (
               <div border-teal-5 border-4 px-10px py-4 rounded-4 bg-teal-1>
                 {/* 分层部分 */}
@@ -99,7 +102,7 @@ const GamePage = () => {
                     levelBlocks.map((item, index) => (
                       item.status === BlockStatus.READY && (
                         <button absolute rounded-2 border-teal-4 border-2 p-1px key={index} style={levelBlockStyle(item)} onClick={() => clickBlock(item)}>
-                          <img w-full h-full src={item.emoji} alt={`Emoji${index}`} style={levelBlockImageStyle(item)} />
+                          <img w-full h-full src={item.emoji} alt={`Layer emoji${index}`} style={levelBlockImageStyle(item)} />
                         </button>
                       )
                     ))
@@ -110,16 +113,18 @@ const GamePage = () => {
                   {
                     randomBlocks.map((randomBlock, outIndex) => (
                       randomBlock.length > 0 && (
-                        <div key={outIndex} flex gap-2 bg-teal-4 p-6px mx-auto rounded-2>
-                          {randomBlock.map((item, index) => (
-                            <button key={index} rounded-2 bg-white w-36px h-36px onClick={() => clickBlock(item, outIndex)}>
-                              {
-                                index === 0
-                                  ? <img src={item.emoji} w-full h-full rounded-2 alt={`Emoji${index}`} />
-                                  : <div w-full h-full bg-gray400 rounded-2></div>
-                                }
-                            </button>
-                          ))}
+                        <div key={outIndex} flex flex-wrap justify-center items-center gap-2 bg-teal-4 p-6px mx-auto rounded-2>
+                          {
+                            randomBlock.map((item, index) => (
+                              <button key={index} rounded-2 bg-white w-36px h-36px onClick={() => clickBlock(item, outIndex)}>
+                                {
+                                  index === 0
+                                    ? <img src={item.emoji} w-full h-full rounded-2 alt={`Random emoji${index}`} />
+                                    : <div w-full h-full bg-gray400 rounded-2></div>
+                                  }
+                              </button>
+                            ))
+                          }
                         </div>
                       )
                     ))
@@ -130,21 +135,20 @@ const GamePage = () => {
           : <div>Loading...</div>
       }
       {/* 槽 */}
-      <div
-        flex flex-wrap gap-2 justify-center items-center max-w-240px
-      bg-teal-1 p-4 rounded-4 border-teal-5 border-4
-      >
-        {slotBlocks.map((item, index) => (
-          <div key={index}>
-            {
-              item
-                ? <div w-10 h-10>
-                    <img src={item.emoji} w-full h-full rounded alt={`Emoji${index}`} />
+      <div flex flex-wrap gap-2 justify-center items-center max-w-240px bg-teal-1 p-4 rounded-4 border-teal-5 border-4>
+        {
+          slotBlocks.map((item, index) => (
+            <div key={index}>
+              {
+                item
+                  ? <div w-10 h-10>
+                      <img src={item.emoji} w-full h-full rounded alt={`Emoji${index}`} />
                     </div>
-                : <div w-10 h-10 bg-gray400 rounded></div>
-              }
-          </div>
-        ))}
+                  : <div w-10 h-10 bg-gray400 rounded></div>
+                }
+            </div>
+          ))
+        }
       </div>
     </div>
   )

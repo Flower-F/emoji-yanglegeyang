@@ -59,8 +59,8 @@ const useGame = (gameConfig: GameConfig, emojis: string[]) => {
     // 可能产生重叠的范围
     const minX = Math.max(block.x - BLOCK_UNIT + 1, 0)
     const minY = Math.max(block.y - BLOCK_UNIT + 1, 0)
-    const maxX = Math.min(block.x + BLOCK_UNIT, BOARD_UNIT - BLOCK_UNIT)
-    const maxY = Math.min(block.y + BLOCK_UNIT, BOARD_UNIT - BLOCK_UNIT)
+    const maxX = Math.min(block.x + BLOCK_UNIT - 1, BOARD_UNIT - BLOCK_UNIT)
+    const maxY = Math.min(block.y + BLOCK_UNIT - 1, BOARD_UNIT - BLOCK_UNIT)
 
     // 遍历该块附近的格子
     let maxLevel = 0
@@ -194,7 +194,12 @@ const useGame = (gameConfig: GameConfig, emojis: string[]) => {
     state.gameStatus = GameStatus.PLAYING
   }
 
-  /** 点击块事件 */
+  /**
+   * 点击块事件
+   * @param block 块
+   * @param randomIndex 随机区域块所在的行数
+   * @param force 是否强制删除，用于技能区
+   */
   const clickBlock = (block: BlockType, randomIndex = -1, force = false) => {
     if (state.currentSlotNum >= gameConfig.slotNum || block.status !== BlockStatus.READY || (block.blocksLowerThan.length > 0 && !force)) {
       return
@@ -231,9 +236,8 @@ const useGame = (gameConfig: GameConfig, emojis: string[]) => {
     })
     let newSlotNum = 0
     const newSlotBlocks = new Array<BlockType | null>(gameConfig.slotNum).fill(null)
-    notNullSlotBlocks.forEach((slotBlock, index) => {
+    notNullSlotBlocks.forEach((slotBlock) => {
       if (slotBlock) {
-        newSlotNum++
         const emojiNum = map.get(slotBlock.emoji)
         if (emojiNum !== undefined && emojiNum >= gameConfig.composedNum) {
           // 消除元素
@@ -242,10 +246,11 @@ const useGame = (gameConfig: GameConfig, emojis: string[]) => {
           // 避免撤回
           operationRecord.length = 0
         } else {
-          newSlotBlocks[index] = slotBlock
+          newSlotBlocks[newSlotNum++] = slotBlock
         }
       }
     })
+
     state.slotBlocks = newSlotBlocks
     state.currentSlotNum = newSlotNum
 
