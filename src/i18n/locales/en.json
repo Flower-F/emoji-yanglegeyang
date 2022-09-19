@@ -21,6 +21,10 @@
   "game": {
     "success": "You Win",
     "failed": "You Failed",
-    "retry": "Retry"
+    "retry": "Retry",
+    "restart": "Restart",
+    "home": "Home",
+    "musicOpen": "Music:Open",
+    "musicClose": "Music:Close"
   }
 }

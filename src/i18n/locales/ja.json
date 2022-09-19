@@ -21,6 +21,10 @@
   "game": {
     "success": "お前の勝ち",
     "failed": "お前の負けだ",
-    "retry": "もう一度"
+    "retry": "もう一度",
+    "restart": "再スタート",
+    "home": "トップページ",
+    "musicOpen": "音楽:をオンにする",
+    "musicClose": "音楽:を閉じる"
   }
 }

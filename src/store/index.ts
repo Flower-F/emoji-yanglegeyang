@@ -6,6 +6,12 @@ import storage from 'redux-persist/lib/storage'
 import { gameSlice } from './gameSlice'
 import { imageSlice } from './imageSlice'
 import { modalSlice } from './modalSlice'
+import { musicSlice } from './musicSlice'
+
+export * from './gameSlice'
+export * from './imageSlice'
+export * from './modalSlice'
+export * from './musicSlice'
 
 const persistConfig = {
   key: 'global',
@@ -23,6 +29,7 @@ export const store = configureStore({
     persist: persistedReducer,
     modal: modalSlice.reducer,
     image: imageSlice.reducer,
+    music: musicSlice.reducer,
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware({
@@ -30,8 +37,5 @@ export const store = configureStore({
     })
   },
 })
-export const persistor = persistStore(store)
 
-export * from './gameSlice'
-export * from './imageSlice'
-export * from './modalSlice'
+export const persistor = persistStore(store)

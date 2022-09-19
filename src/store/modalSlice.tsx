@@ -28,7 +28,7 @@ export const modalSlice = createSlice({
     },
     closeModal: (state: ModalState) => {
       state.isOpen = false
-      state.closeOnOverlayClick = false
+      state.closeOnOverlayClick = true
     },
     setModalContent: (state: ModalState, action: PayloadAction<ReactNode>) => {
       state.content = action.payload

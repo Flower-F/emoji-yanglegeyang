@@ -1,8 +1,9 @@
 import type { CSSProperties } from 'react'
 
+import ComLoading from '~/components/ComLoading'
 import { BLOCK_UNIT, BlockStatus, BOARD_UNIT, GameStatus } from '~/constants'
 import useGame from '~/hooks/useGame'
-import { setImages } from '~/store'
+import { closeModal, openModal, setImages, setModalContent } from '~/store'
 import type { BlockType } from '~/types/block'
 
 type ImageModule = typeof import('*.png')
@@ -31,6 +32,7 @@ const GamePage = () => {
   } = useGame(images)
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const loadImage = useMemoizedFn(async () => {
     const modules = import.meta.glob<ImageModule>('~/assets/*.png')
@@ -75,16 +77,45 @@ const GamePage = () => {
     } as CSSProperties
   })
 
+  const backGame = useMemoizedFn(() => {
+    dispatch(closeModal())
+  })
+
+  const goBackHome = useMemoizedFn(() => {
+    dispatch(closeModal())
+    navigate('/')
+  })
+
+  const replayGame = useMemoizedFn(() => {
+    dispatch(closeModal())
+    startGame()
+  })
+
+  const showSettingModal = useMemoizedFn(() => {
+    dispatch(setModalContent(
+      <div flex justify-between p-20px mt-4 mx-auto max-w-220px>
+        <button className="btn" p-2 rounded-full onClick={replayGame} title={t('game.restart')}>
+          <div i-carbon-reset w-6 h-6></div>
+        </button>
+        <button className="btn" p-2 rounded-full onClick={goBackHome} title={t('game.home')}>
+          <div i-carbon-home w-6 h-6></div>
+        </button>
+        <button className="btn" p-2 rounded-full onClick={backGame} title={t('game.restart')}>
+          <div i-carbon-game-console w-6 h-6></div>
+        </button>
+      </div>,
+    ))
+    dispatch(openModal())
+  })
+
   return (
     <div mx-auto flex flex-col justify-center items-center gap-4 style={containerStyle()}>
       {/* 分数部分 */}
       <div flex justify-between items-center w-full>
-        <div flex gap-2 text-white bg-teal-6 p="x2 y1.5" rounded>
-          <button i-carbon-previous-outline w-6 h-6 rounded-full cursor-pointer hover:text-teal-1 onClick={() => navigate(-1)}></button>
-          <div mx-2px w-2px bg-white></div>
-          <button i-carbon-reset w-6 h-6 cursor-pointer hover:text-teal-1 onClick={startGame}></button>
+      <div className="btn" cursor-none select-none>{disappearedBlockNum} / {totalBlockNum}</div>
+        <div flex gap-2 text-white bg-teal-6 p="x2 y1.5" rounded className="btn">
+          <button i-carbon-settings w-6 h-6 onClick={showSettingModal}></button>
         </div>
-        <div className="btn" cursor-none select-none>{disappearedBlockNum} / {totalBlockNum}</div>
       </div>
       {
         gameStatus > GameStatus.READY && images.length > 0
@@ -126,7 +157,7 @@ const GamePage = () => {
                 </div>
             </div>
             )
-          : <div>Loading...</div>
+          : <div><ComLoading /></div>
       }
       {/* 槽 */}
       <div flex flex-wrap gap-2 justify-center items-center max-w-240px bg-teal-1 p-4 rounded-4 border-teal-5 border-4>
@@ -138,7 +169,7 @@ const GamePage = () => {
                   ? <div w-10 h-10 bg-white rounded-2 p-1px border-teal-4 border-2>
                       <img src={item.emoji} w-full h-full rounded-2 alt={`Emoji${index}`} />
                     </div>
-                  : <div w-10 h-10 bg-gray400 rounded-2></div>
+                  : <div w-10 h-10 bg-white rounded-2 border-teal-4 border-2></div>
                 }
             </div>
           ))

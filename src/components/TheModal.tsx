@@ -5,6 +5,7 @@ import { closeModal } from '~/store'
 const modalStyles: ReactModal.Styles = {
   content: {
     width: '80%',
+    maxWidth: '360px',
     overflowX: 'hidden',
     top: '50%',
     left: '50%',
@@ -30,15 +31,17 @@ const TheModal = () => {
   })
 
   return (
-    <ReactModal isOpen={isOpen}
+    <ReactModal
+      isOpen={isOpen}
       style={modalStyles}
       closeTimeoutMS={80}
       shouldCloseOnOverlayClick={closeOnOverlayClick}
       onRequestClose={close}
+      preventScroll={true}
     >
       <div>
         <div text-end border-b mb-2>
-          <button text="black 3xl hover:teal-7" font-extrabold i-carbon-close onClick={close}></button>
+          <button text="teal-8 3xl hover:teal-7" font-extrabold i-carbon-close onClick={close}></button>
         </div>
         {content}
       </div>

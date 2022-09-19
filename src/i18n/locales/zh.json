@@ -21,6 +21,10 @@
   "game": {
     "success": "你赢了",
     "failed": "你输了",
-    "retry": "再来一次"
+    "retry": "再来一次",
+    "restart": "重新开始",
+    "home": "首页",
+    "musicOpen": "音乐:开",
+    "musicClose": "音乐:关"
   }
 }

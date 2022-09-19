@@ -29,6 +29,7 @@ Assets are from [Fluent Emoji](https://github.com/microsoft/fluentui-emoji) by M
   - ⬜ Undo
   - ⬜ Foresee
   - ⬜ Destroy
+- ⬜ Music Playing
 - ⬜ Advertisement
 
 ## Tech Stack
