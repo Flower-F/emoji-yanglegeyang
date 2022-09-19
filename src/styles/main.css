@@ -6,8 +6,11 @@ body,
   margin: 0;
 }
 
-html {
+#root {
   overflow-x: hidden;
+}
+
+html {
   background: linear-gradient(90deg, #e7f8f2 0%, #d9f4ef 100%);
 }
 

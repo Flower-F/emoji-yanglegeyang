@@ -1,6 +1,6 @@
 import i18n, { resources } from '~/i18n'
 
-const Header = () => {
+const TheHeader = () => {
   const { toggleDark } = useDark()
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -50,4 +50,4 @@ const Header = () => {
   )
 }
 
-export default Header
+export default TheHeader

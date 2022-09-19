@@ -1,8 +1,8 @@
-const Footer = () => {
+const TheFooter = () => {
   const { t } = useTranslation()
 
   return (
-    <div text="base neutral-6 dark:neutral-4" p-6>
+    <footer text="base neutral-6 dark:neutral-4" p-6>
       <div>
         {t('footer.assets')} {' '}
         <a dashed-link href="https://emoji-generator.netlify.app/" target="_blank" rel="noreferrer">{t('footer.generator')}</a>
@@ -17,8 +17,8 @@ const Footer = () => {
         {' '} <a dashed-link href="https://github.com/Flower-F" target="_blank" rel="noreferrer">Flower-F</a> {' '} |
         {' '} <a dashed-link href="https://github.com/Flower-F/emoji-yanglegeyang" target="_blank" rel="noreferrer">Source Code</a>
       </div>
-    </div>
+    </footer>
   )
 }
 
-export default Footer
+export default TheFooter

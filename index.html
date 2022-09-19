@@ -17,8 +17,9 @@
             ? 'dark'
             : 'light'
           : 'auto'
-        if (setting === 'dark' || (prefersDark && setting !== 'light'))
+        if (setting === 'dark' || (prefersDark && setting !== 'light')) {
           document.documentElement.classList.toggle('dark', true)
+        }
       })()
     </script>
     <script type="module" src="/src/main.tsx"></script>

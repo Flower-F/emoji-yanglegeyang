@@ -14,10 +14,10 @@ const resolveImportGlobModule = async (modules: Record<string, ImportModuleFunct
 }
 
 /** 每个格子的宽高，单位 px */
-export const UNIT_SIZE = 14
+const UNIT_SIZE = 14
 
 const GamePage = () => {
-  const { images } = useSelector(store => store.persist.image)
+  const { images } = useSelector(store => store.image)
   const { gameConfig } = useSelector(store => store.persist.game)
   const {
     levelBlocks,
@@ -39,16 +39,10 @@ const GamePage = () => {
   })
 
   useEffect(() => {
-    if (images.length === 0) {
-      loadImage()
-    }
-  }, [images.length, loadImage])
-
-  useEffect(() => {
-    if (images.length > 0) {
+    loadImage().then(() => {
       startGame()
-    }
-  }, [startGame, images])
+    })
+  }, [loadImage, startGame])
 
   const levelBlockStyle = useMemoizedFn((item: BlockType) => {
     return {
@@ -141,10 +135,10 @@ const GamePage = () => {
             <div key={index}>
               {
                 item
-                  ? <div w-10 h-10>
-                      <img src={item.emoji} w-full h-full rounded alt={`Emoji${index}`} />
+                  ? <div w-10 h-10 bg-white rounded-2 p-1px border-teal-4 border-2>
+                      <img src={item.emoji} w-full h-full rounded-2 alt={`Emoji${index}`} />
                     </div>
-                  : <div w-10 h-10 bg-gray400 rounded></div>
+                  : <div w-10 h-10 bg-gray400 rounded-2></div>
                 }
             </div>
           ))

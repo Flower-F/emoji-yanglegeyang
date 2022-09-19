@@ -1,4 +1,4 @@
-# 表了个情
+# Emoji Yanglegeyang 表了个情
 
 This project is created by [Flower-F/revitesse-lite](https://github.com/Flower-F/revitesse-lite).
 
@@ -33,6 +33,9 @@ Assets are from [Fluent Emoji](https://github.com/microsoft/fluentui-emoji) by M
 - 🤣 [Fluent Emoji](https://github.com/microsoft/fluentui-emoji)
 - 🌋 [Redux Toolkit with Redux Persist](https://redux-toolkit.js.org/)
 - 🌏 [React I18next](https://react.i18next.com/)
+- 🍭 [React Modal](http://reactcommunity.org/react-modal/)
 - 🎨 [Unocss](https://github.com/unocss/unocss)
 - ☁️ [Netlify](https://www.netlify.com/)
 - 🦾 [ESlint](https://eslint.org/) + [Stylelint](https://stylelint.io/) + [Commitlint](https://commitlint.js.org/#/)
+
+## PR Welcome !!!
