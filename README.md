@@ -20,7 +20,7 @@ Assets are from [Fluent Emoji](https://github.com/microsoft/fluentui-emoji) by M
 - ⬜ Core logics
   - ✅ Map generating 
   - ✅ Basic click events
-  - ⬜ Success and failed modal
+  - ✅ Success and failed modal
   - ⬜ Moving icon after clicking
 - ✅ I18n
 - ✅ Dark mode & light mode
