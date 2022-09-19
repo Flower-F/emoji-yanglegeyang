@@ -7,6 +7,7 @@ import type { GameConfig } from '~/types/game'
 const namespace = 'game'
 
 interface GameState {
+  /** 游戏配置 */
   gameConfig: GameConfig
 }
 

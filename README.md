@@ -17,7 +17,11 @@ Assets are from [Fluent Emoji](https://github.com/microsoft/fluentui-emoji) by M
 - ⬜ Difficulty configuration
   - ✅ Four kinds of prepared difficulties
   - ⬜ Self made difficulty
-- ✅ Map generating
+- ⬜ Core logics
+  - ✅ Map generating 
+  - ✅ Basic click events
+  - ⬜ Success and failed modal
+  - ⬜ Moving icon after clicking
 - ✅ I18n
 - ✅ Dark mode & light mode
 - ⬜ Skill
@@ -29,8 +33,8 @@ Assets are from [Fluent Emoji](https://github.com/microsoft/fluentui-emoji) by M
 
 ## Tech Stack
 
-- ⚡️ [React Hooks](https://reactjs.org/) + [Vite](https://vitejs.dev/) + [Pnpm](https://pnpm.io/) + [ESBuild](https://esbuild.github.io/)
 - 🤣 [Fluent Emoji](https://github.com/microsoft/fluentui-emoji)
+- ⚡️ [React Hooks](https://reactjs.org/) + [Vite](https://vitejs.dev/) + [Pnpm](https://pnpm.io/) + [ESBuild](https://esbuild.github.io/)
 - 🌋 [Redux Toolkit with Redux Persist](https://redux-toolkit.js.org/)
 - 🌏 [React I18next](https://react.i18next.com/)
 - 🍭 [React Modal](http://reactcommunity.org/react-modal/)

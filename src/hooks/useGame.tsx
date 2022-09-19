@@ -1,10 +1,11 @@
 import { random, remove, shuffle } from 'lodash-es'
+import type { ReactNode } from 'react'
 
 import { BLOCK_UNIT, BlockStatus, BOARD_UNIT, GameStatus } from '~/constants'
+import { closeModal, openModal, setModalCloseOnOverlayClick, setModalContent } from '~/store'
 import type { BlockType, BoardUnitType } from '~/types/block'
-import type { GameConfig } from '~/types/game'
 
-const useGame = (gameConfig: GameConfig, emojis: string[]) => {
+const useGame = (emojis: string[]) => {
   // 统一管理所有响应式状态
   const state = useReactive<{
     /** 每层的块 */
@@ -39,6 +40,10 @@ const useGame = (gameConfig: GameConfig, emojis: string[]) => {
   let board: BoardUnitType[][] = []
   // 操作记录（存储点击的块）
   const operationRecord: BlockType[] = []
+
+  const { gameConfig } = useSelector(store => store.persist.game)
+  const dispatch = useDispatch()
+  const { t } = useTranslation()
 
   /** 初始化 */
   const initBoard = (width: number, height: number) => {
@@ -194,6 +199,23 @@ const useGame = (gameConfig: GameConfig, emojis: string[]) => {
     state.gameStatus = GameStatus.PLAYING
   }
 
+  /** 辅助函数 弹窗内容 */
+  const renderModalContent = useMemoizedFn((emoji: ReactNode, buttonText: string) => {
+    return (
+      <div flex flex-col items-center justify-center text-teal-9 mt-4>
+        {emoji}
+        <div font-extrabold m="t2 b3" text-xl>{buttonText}</div>
+        <button className="btn" flex items-center gap-1 onClick={() => {
+          dispatch(closeModal())
+          startGame()
+        }}>
+          <div>{t('game.retry')}</div>
+          <div i-carbon-reset></div>
+        </button>
+      </div>
+    )
+  })
+
   /**
    * 点击块事件
    * @param block 块
@@ -257,12 +279,15 @@ const useGame = (gameConfig: GameConfig, emojis: string[]) => {
     if (state.currentSlotNum >= gameConfig.slotNum) {
       state.gameStatus = GameStatus.FAILED
       // 你输了
-      // console.log('fail')
+      dispatch(setModalContent(renderModalContent(<div i-carbon-face-dizzy-filled text-2xl></div>, t('game.failed'))))
+      dispatch(setModalCloseOnOverlayClick(false))
+      dispatch(openModal())
     }
     if (state.disappearedBlockNum >= state.totalBlockNum) {
-      state.gameStatus = GameStatus.SUCCESS
       // 你赢了
-      // console.log('win')
+      state.gameStatus = GameStatus.SUCCESS
+      dispatch(setModalContent(renderModalContent(<div i-carbon-face-wink-filled text-2xl></div>, t('game.success'))))
+      dispatch(openModal())
     }
   }
 

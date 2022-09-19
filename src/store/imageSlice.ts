@@ -4,6 +4,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const namespace = 'image'
 
 interface ImageState {
+  /** 表情包集合 */
   images: string[]
 }
 

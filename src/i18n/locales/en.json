@@ -17,5 +17,10 @@
     "difficult": "Hard",
     "hell": "Terrifying",
     "custom": "Custom"
+  },
+  "game": {
+    "success": "You Win",
+    "failed": "You Failed",
+    "retry": "Retry"
   }
 }

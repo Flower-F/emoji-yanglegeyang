@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react'
 
 import { BLOCK_UNIT, BlockStatus, BOARD_UNIT, GameStatus } from '~/constants'
+import useGame from '~/hooks/useGame'
 import { setImages } from '~/store'
 import type { BlockType } from '~/types/block'
 
@@ -18,7 +19,6 @@ const UNIT_SIZE = 14
 
 const GamePage = () => {
   const { images } = useSelector(store => store.image)
-  const { gameConfig } = useSelector(store => store.persist.game)
   const {
     levelBlocks,
     slotBlocks,
@@ -28,7 +28,7 @@ const GamePage = () => {
     disappearedBlockNum,
     startGame,
     clickBlock,
-  } = useGame(gameConfig, images)
+  } = useGame(images)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -46,7 +46,7 @@ const GamePage = () => {
 
   const levelBlockStyle = useMemoizedFn((item: BlockType) => {
     return {
-      zIndex: item.level + 10,
+      zIndex: item.level,
       left: `${item.x * UNIT_SIZE}px`,
       top: `${item.y * UNIT_SIZE}px`,
       backgroundColor: item.blocksLowerThan.length > 0 ? '#707c69' : '#fff',

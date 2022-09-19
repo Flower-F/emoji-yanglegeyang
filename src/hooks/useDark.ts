@@ -30,7 +30,7 @@ const useDark = () => {
 
   return {
     isDark,
-    toggleDark,
+    toggleDark: useMemoizedFn(toggleDark),
   }
 }
 
