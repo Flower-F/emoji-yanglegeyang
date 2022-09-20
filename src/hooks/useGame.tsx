@@ -289,6 +289,15 @@ const useGame = (emojis: string[]) => {
     }
   }
 
+  /** 打乱分层区的块 */
+  const shuffleBlocks = () => {
+    const existBlocks = state.levelBlocks.filter(item => item.status === BlockStatus.READY)
+    const newEmojis = shuffle(existBlocks.map(block => block.emoji))
+    existBlocks.forEach((block, index) => {
+      block.emoji = newEmojis[index]
+    })
+  }
+
   return {
     levelBlocks: state.levelBlocks,
     slotBlocks: state.slotBlocks,
@@ -298,6 +307,7 @@ const useGame = (emojis: string[]) => {
     disappearedBlockNum: state.disappearedBlockNum,
     startGame: useMemoizedFn(startGame),
     clickBlock: useMemoizedFn(clickBlock),
+    shuffleBlocks: useMemoizedFn(shuffleBlocks),
   }
 }
 

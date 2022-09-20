@@ -31,6 +31,7 @@ const GamePage = () => {
     disappearedBlockNum,
     startGame,
     clickBlock,
+    shuffleBlocks,
   } = useGame(images)
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -124,9 +125,11 @@ const GamePage = () => {
 
   return (
     <div mx-auto flex flex-col justify-center items-center gap-4 style={containerStyle()}>
-      {/* 分数部分 */}
+      {/* 头部 */}
       <div flex justify-between items-center w-full>
-      <div className="btn" cursor-none select-none>{disappearedBlockNum} / {totalBlockNum}</div>
+        {/* 分数 */}
+        <div className="btn" cursor-none select-none>{disappearedBlockNum} / {totalBlockNum}</div>
+        {/* 设置 */}
         <button flex gap-2 text-white bg-teal-6 p="x2 y1.5" rounded className="btn" title={t('game.settings')} onClick={showSettingsModal}>
           <div i-carbon-settings w-6 h-6></div>
         </button>
@@ -173,8 +176,9 @@ const GamePage = () => {
             )
           : <ComLoading />
       }
-      {/* 槽 */}
+      {/* 槽与技能区 */}
       <div flex bg-teal-1 p-4 rounded-4 border-teal-5 border-4>
+        {/* 槽区 */}
         <div flex flex-wrap gap-2 justify-center items-center>
           {
             slotBlocks.map((item, index) => (
@@ -188,8 +192,9 @@ const GamePage = () => {
             ))
           }
         </div>
+        {/* 技能区 */}
         <div w-150px ml-3 flex flex-col gap-2 justify-center items-center text-teal-9>
-          <button w-full rounded-2 p-1px border-teal-4 border-2>{t('game.shuffle')}</button>
+          <button w-full rounded-2 p-1px border-teal-4 border-2 onClick={shuffleBlocks}>{t('game.shuffle')}</button>
           <button w-full rounded-2 p-1px border-teal-4 border-2>{t('game.undo')}</button>
           <button w-full rounded-2 p-1px border-teal-4 border-2>{t('game.foresee')}</button>
           <button w-full rounded-2 p-1px border-teal-4 border-2>{t('game.destroy')}</button>
