@@ -208,7 +208,8 @@ const useGame = (emojis: string[]) => {
     return (
       <div flex flex-col items-center justify-center text-teal-9 mt-4>
         {emoji}
-        <div font-extrabold m="t2 b3" text-xl>{buttonText}</div>
+        <div font-extrabold mt-2 mb-1 text-xl>{buttonText}</div>
+        <div text-sm mb-3>（广告位招租）</div>
         <button className="btn" flex items-center justify-center gap-1 onClick={() => {
           dispatch(closeModal())
           startGame()

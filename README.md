@@ -29,7 +29,7 @@ Assets are from [Fluent Emoji](https://github.com/microsoft/fluentui-emoji) by M
   - ✅ Foresee
   - ✅ Destroy
 - ✅ Music playing
-- ⬜ Advertisement
+- ✅ Advertisement
 
 ## Tech Stack
 
