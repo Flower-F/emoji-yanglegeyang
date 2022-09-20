@@ -25,6 +25,11 @@
     "restart": "重新开始",
     "home": "首页",
     "musicOpen": "音乐:开",
-    "musicClose": "音乐:关"
+    "musicClose": "音乐:关",
+    "settings": "设置",
+    "shuffle": "打乱",
+    "undo": "撤回",
+    "foresee": "预知",
+    "destroy": "毁灭"
   }
 }

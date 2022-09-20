@@ -25,6 +25,11 @@
     "restart": "再スタート",
     "home": "トップページ",
     "musicOpen": "音楽:をオンにする",
-    "musicClose": "音楽:を閉じる"
+    "musicClose": "音楽:を閉じる",
+    "settings": "設定＃セッテイ＃",
+    "shuffle": "かき乱す",
+    "undo": "前へ",
+    "foresee": "予知",
+    "destroy": "破滅"
   }
 }

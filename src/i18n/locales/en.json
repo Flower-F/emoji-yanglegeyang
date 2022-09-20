@@ -25,6 +25,11 @@
     "restart": "Restart",
     "home": "Home",
     "musicOpen": "Music:Open",
-    "musicClose": "Music:Close"
+    "musicClose": "Music:Close",
+    "settings": "Settings",
+    "shuffle": "Shuffle",
+    "undo": "Undo",
+    "foresee": "Foresee",
+    "destroy": "Destroy"
   }
 }

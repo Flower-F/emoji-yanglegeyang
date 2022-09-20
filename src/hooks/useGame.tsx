@@ -204,7 +204,7 @@ const useGame = (emojis: string[]) => {
       <div flex flex-col items-center justify-center text-teal-9 mt-4>
         {emoji}
         <div font-extrabold m="t2 b3" text-xl>{buttonText}</div>
-        <button className="btn" flex items-center gap-1 onClick={() => {
+        <button className="btn" flex items-center justify-center gap-1 onClick={() => {
           dispatch(closeModal())
           startGame()
         }}>
@@ -218,19 +218,20 @@ const useGame = (emojis: string[]) => {
   /**
    * 点击块事件
    * @param block 块
-   * @param randomIndex 随机区域块所在的行数
+   * @param randomRowIndex 随机区域块所在的行数
+   * @param randomColIndex 随机区域块所在的列数
    * @param force 是否强制删除，用于技能区
    */
-  const clickBlock = (block: BlockType, randomOuterIndex = -1, force = false) => {
-    if (currentSlotNum >= gameConfig.slotNum || block.status !== BlockStatus.READY || (block.blocksLowerThan.length > 0 && !force)) {
+  const clickBlock = (block: BlockType, randomRowIndex = -1, randomColIndex = 0, force = false) => {
+    if (currentSlotNum >= gameConfig.slotNum || block.status !== BlockStatus.READY || (block.blocksLowerThan.length > 0 && !force) || randomColIndex !== 0) {
       return
     }
 
     // 设置状态
     block.status = BlockStatus.CLICKED
-    if (randomOuterIndex >= 0) {
+    if (randomRowIndex >= 0) {
       // 移除所点击的随机区域的第一个元素
-      state.randomBlocks[randomOuterIndex].shift()
+      state.randomBlocks[randomRowIndex].shift()
     } else {
       // 非随机区才可撤回
       operationRecord.push(block)
@@ -274,8 +275,8 @@ const useGame = (emojis: string[]) => {
     state.slotBlocks = newSlotBlocks
 
     if (currentSlotNum >= gameConfig.slotNum) {
-      state.gameStatus = GameStatus.FAILED
       // 你输了
+      state.gameStatus = GameStatus.FAILED
       dispatch(setModalContent(renderModalContent(<div i-carbon-face-dizzy-filled text-2xl></div>, t('game.failed'))))
       dispatch(setModalCloseOnOverlayClick(false))
       dispatch(openModal())

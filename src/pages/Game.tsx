@@ -60,6 +60,12 @@ const GamePage = () => {
     } as CSSProperties
   })
 
+  const randomBlockStyle = useMemoizedFn((index: number) => {
+    return {
+      cursor: index === 0 ? 'pointer' : 'not-allowed',
+    } as CSSProperties
+  })
+
   const levelBlockImageStyle = useMemoizedFn((item: BlockType) => {
     return {
       opacity: item.blocksLowerThan.length > 0 ? '0.6' : '1',
@@ -99,7 +105,7 @@ const GamePage = () => {
     dispatch(closeModal())
   })
 
-  const showSettingModal = useMemoizedFn(() => {
+  const showSettingsModal = useMemoizedFn(() => {
     dispatch(setModalContent(
       <div flex justify-between p-20px mt-4 mx-auto max-w-220px>
         <button className="btn" p-2 rounded-full onClick={replayGame} title={t('game.restart')}>
@@ -121,9 +127,9 @@ const GamePage = () => {
       {/* 分数部分 */}
       <div flex justify-between items-center w-full>
       <div className="btn" cursor-none select-none>{disappearedBlockNum} / {totalBlockNum}</div>
-        <div flex gap-2 text-white bg-teal-6 p="x2 y1.5" rounded className="btn">
-          <button i-carbon-settings w-6 h-6 onClick={showSettingModal}></button>
-        </div>
+        <button flex gap-2 text-white bg-teal-6 p="x2 y1.5" rounded className="btn" title={t('game.settings')} onClick={showSettingsModal}>
+          <div i-carbon-settings w-6 h-6></div>
+        </button>
       </div>
       {
         gameStatus > GameStatus.READY && images.length > 0
@@ -146,10 +152,10 @@ const GamePage = () => {
                   {
                     randomBlocks.map((randomBlock, outIndex) => (
                       randomBlock.length > 0 && (
-                        <div key={outIndex} flex flex-wrap justify-center items-center gap-2 bg-teal-4 p-6px mx-auto rounded-2>
+                        <div key={outIndex} flex flex-wrap justify-center items-center gap-2 bg-teal-4 p="x-6px y-10px" mx-auto rounded-2>
                           {
                             randomBlock.map((item, index) => (
-                              <button key={index} rounded-2 bg-white w-36px h-36px onClick={() => clickBlock(item, outIndex)}>
+                              <button key={index} rounded-2 bg-white w-36px h-36px onClick={() => clickBlock(item, outIndex, index)} style={randomBlockStyle(index)}>
                                 {
                                   index === 0
                                     ? <img src={item.emoji} w-full h-full rounded-2 alt={`Random emoji${index}`} />
@@ -165,21 +171,29 @@ const GamePage = () => {
                 </div>
             </div>
             )
-          : <div><ComLoading /></div>
+          : <ComLoading />
       }
       {/* 槽 */}
-      <div flex flex-wrap gap-2 justify-center items-center max-w-240px bg-teal-1 p-4 rounded-4 border-teal-5 border-4>
-        {
-          slotBlocks.map((item, index) => (
-            <div key={index}>
-              {
-                <div w-10 h-10 bg-white rounded-2 p-1px border-teal-4 border-2>
-                  {item ? <img src={item.emoji} w-full h-full rounded-2 alt={`Emoji${index}`} /> : null}
-                </div>
-              }
-            </div>
-          ))
-        }
+      <div flex bg-teal-1 p-4 rounded-4 border-teal-5 border-4>
+        <div flex flex-wrap gap-2 justify-center items-center>
+          {
+            slotBlocks.map((item, index) => (
+              <div key={index}>
+                {
+                  <div w-10 h-10 bg-white rounded-2 p-1px border-teal-4 border-2>
+                    {item ? <img src={item.emoji} w-full h-full rounded-2 alt={`Emoji${index}`} /> : null}
+                  </div>
+                }
+              </div>
+            ))
+          }
+        </div>
+        <div w-150px ml-3 flex flex-col gap-2 justify-center items-center text-teal-9>
+          <button w-full rounded-2 p-1px border-teal-4 border-2>{t('game.shuffle')}</button>
+          <button w-full rounded-2 p-1px border-teal-4 border-2>{t('game.undo')}</button>
+          <button w-full rounded-2 p-1px border-teal-4 border-2>{t('game.foresee')}</button>
+          <button w-full rounded-2 p-1px border-teal-4 border-2>{t('game.destroy')}</button>
+        </div>
       </div>
     </div>
   )
