@@ -29,6 +29,8 @@ const useGame = (emojis: string[]) => {
     disappearedBlockNum: number
     /** 当前游戏状态 */
     gameStatus: GameStatus
+    /** 是否可以透视随机区的块 */
+    foresee: boolean
   }>({
         levelBlocks: [],
         slotBlocks: [],
@@ -36,6 +38,7 @@ const useGame = (emojis: string[]) => {
         totalBlockNum: 0,
         disappearedBlockNum: 0,
         gameStatus: GameStatus.READY,
+        foresee: false,
       })
 
   const { gameConfig } = useSelector(store => store.persist.game)
@@ -43,7 +46,7 @@ const useGame = (emojis: string[]) => {
   const { t } = useTranslation()
 
   /** 初始化 board 数组 */
-  const initBoard = (width: number, height: number) => {
+  const cleanBoard = (width: number, height: number) => {
     board = new Array<BoardUnitType[]>(width)
     for (let i = 0; i < width; i++) {
       board[i] = new Array(height)
@@ -109,8 +112,8 @@ const useGame = (emojis: string[]) => {
     })
   }
 
-  /** 初始化槽、随机区、分层区三部分数据 */
-  const initGame = () => {
+  /** 初始化槽、随机区、分层区三部分数据，以及生成块总数 */
+  const initBlocksData = () => {
     // 1. 规划块数：总块数必须是该值的倍数，才能确保可以生成答案
     const blockNumUnit = gameConfig.composedNum * emojis.length
     // 随机生成的总块数
@@ -190,11 +193,12 @@ const useGame = (emojis: string[]) => {
   /** 开始游戏 */
   const startGame = () => {
     slotsMap.clear()
-    initBoard(BOARD_UNIT - BLOCK_UNIT + 1, BOARD_UNIT - BLOCK_UNIT + 1)
+    cleanBoard(BOARD_UNIT - BLOCK_UNIT + 1, BOARD_UNIT - BLOCK_UNIT + 1)
     state.gameStatus = GameStatus.READY
     state.disappearedBlockNum = 0
+    state.foresee = false
     currentSlotNum = 0
-    initGame()
+    initBlocksData()
     state.gameStatus = GameStatus.PLAYING
   }
 
@@ -223,15 +227,25 @@ const useGame = (emojis: string[]) => {
    * @param force 是否强制删除，用于技能区
    */
   const clickBlock = (block: BlockType, randomRowIndex = -1, randomColIndex = 0, force = false) => {
-    if (currentSlotNum >= gameConfig.slotNum || block.status !== BlockStatus.READY || (block.blocksLowerThan.length > 0 && !force) || randomColIndex !== 0) {
+    if (currentSlotNum >= gameConfig.slotNum
+      || block.status !== BlockStatus.READY
+      || (block.blocksLowerThan.length > 0 && !force)
+      || (randomColIndex !== 0 && !state.foresee)) {
       return
     }
 
     // 设置状态
     block.status = BlockStatus.CLICKED
+
+    // 将元素从分层区和随机区移除
     if (randomRowIndex >= 0) {
-      // 移除所点击的随机区域的第一个元素
-      state.randomBlocks[randomRowIndex].shift()
+      if (state.foresee) {
+        // 预知状态下之后可以随便移除随机区元素
+        state.randomBlocks[randomRowIndex].splice(randomColIndex, 1)
+      } else {
+        // 否则只能移除所点击随机区域的第一个元素
+        state.randomBlocks[randomRowIndex].shift()
+      }
     } else {
       // 非随机区才可撤回
       operationRecord.push(block)
@@ -290,12 +304,17 @@ const useGame = (emojis: string[]) => {
   }
 
   /** 打乱分层区的块 */
-  const shuffleBlocks = () => {
+  const shuffleLevelBlocks = () => {
     const existBlocks = state.levelBlocks.filter(item => item.status === BlockStatus.READY)
     const newEmojis = shuffle(existBlocks.map(block => block.emoji))
     existBlocks.forEach((block, index) => {
       block.emoji = newEmojis[index]
     })
+  }
+
+  /** 透视随机区的块 */
+  const foreseeRandomBlocks = () => {
+    state.foresee = true
   }
 
   return {
@@ -305,9 +324,11 @@ const useGame = (emojis: string[]) => {
     gameStatus: state.gameStatus,
     totalBlockNum: state.totalBlockNum,
     disappearedBlockNum: state.disappearedBlockNum,
+    foresee: state.foresee,
     startGame: useMemoizedFn(startGame),
     clickBlock: useMemoizedFn(clickBlock),
-    shuffleBlocks: useMemoizedFn(shuffleBlocks),
+    shuffleLevelBlocks: useMemoizedFn(shuffleLevelBlocks),
+    foreseeRandomBlocks: useMemoizedFn(foreseeRandomBlocks),
   }
 }
 
