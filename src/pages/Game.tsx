@@ -1,9 +1,10 @@
 import type { CSSProperties } from 'react'
 
+import bgm from '~/assets/music/bgm.mp3'
 import ComLoading from '~/components/ComLoading'
 import { BLOCK_UNIT, BlockStatus, BOARD_UNIT, GameStatus } from '~/constants'
 import useGame from '~/hooks/useGame'
-import { closeModal, openModal, setImages, setModalContent } from '~/store'
+import { closeModal, closeMusic, openModal, openMusic, setImages, setModalContent, setMusicSource } from '~/store'
 import type { BlockType } from '~/types/block'
 
 type ImageModule = typeof import('*.png')
@@ -20,6 +21,7 @@ const UNIT_SIZE = 14
 
 const GamePage = () => {
   const { images } = useSelector(store => store.image)
+  const { isPlaying } = useSelector(store => store.music)
   const {
     levelBlocks,
     slotBlocks,
@@ -35,7 +37,7 @@ const GamePage = () => {
   const { t } = useTranslation()
 
   const loadImage = useMemoizedFn(async () => {
-    const modules = import.meta.glob<ImageModule>('~/assets/*.png')
+    const modules = import.meta.glob<ImageModule>('~/assets/images/*.png')
     const images = await resolveImportGlobModule(modules)
     dispatch(setImages(images))
   })
@@ -77,10 +79,6 @@ const GamePage = () => {
     } as CSSProperties
   })
 
-  const backGame = useMemoizedFn(() => {
-    dispatch(closeModal())
-  })
-
   const goBackHome = useMemoizedFn(() => {
     dispatch(closeModal())
     navigate('/')
@@ -89,6 +87,16 @@ const GamePage = () => {
   const replayGame = useMemoizedFn(() => {
     dispatch(closeModal())
     startGame()
+  })
+
+  const toggleMusic = useMemoizedFn(() => {
+    if (!isPlaying) {
+      dispatch(setMusicSource(bgm))
+      dispatch(openMusic())
+    } else {
+      dispatch(closeMusic())
+    }
+    dispatch(closeModal())
   })
 
   const showSettingModal = useMemoizedFn(() => {
@@ -100,8 +108,8 @@ const GamePage = () => {
         <button className="btn" p-2 rounded-full onClick={goBackHome} title={t('game.home')}>
           <div i-carbon-home w-6 h-6></div>
         </button>
-        <button className="btn" p-2 rounded-full onClick={backGame} title={t('game.restart')}>
-          <div i-carbon-game-console w-6 h-6></div>
+        <button className="btn" p-2 rounded-full onClick={toggleMusic} title={isPlaying ? t('game.musicOpen') : t('game.musicClose')}>
+          {isPlaying ? <div i-carbon-music w-6 h-6></div> : <div i-carbon-music-remove w-6 h-6></div>}
         </button>
       </div>,
     ))
@@ -165,12 +173,10 @@ const GamePage = () => {
           slotBlocks.map((item, index) => (
             <div key={index}>
               {
-                item
-                  ? <div w-10 h-10 bg-white rounded-2 p-1px border-teal-4 border-2>
-                      <img src={item.emoji} w-full h-full rounded-2 alt={`Emoji${index}`} />
-                    </div>
-                  : <div w-10 h-10 bg-white rounded-2 border-teal-4 border-2></div>
-                }
+                <div w-10 h-10 bg-white rounded-2 p-1px border-teal-4 border-2>
+                  {item ? <img src={item.emoji} w-full h-full rounded-2 alt={`Emoji${index}`} /> : null}
+                </div>
+              }
             </div>
           ))
         }

@@ -8,6 +8,7 @@ const ThePlayer = () => {
       return
     }
     if (isPlaying && source !== '') {
+      audioRef.current.src = source
       audioRef.current.play()
     } else {
       audioRef.current.pause()

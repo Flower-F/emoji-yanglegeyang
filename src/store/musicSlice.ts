@@ -25,10 +25,10 @@ export const musicSlice = createSlice({
     closeMusic: (state: MusicState) => {
       state.isPlaying = false
     },
-    setSource: (state: MusicState, action: PayloadAction<string>) => {
+    setMusicSource: (state: MusicState, action: PayloadAction<string>) => {
       state.source = action.payload
     },
   },
 })
 
-export const { openMusic, closeMusic } = musicSlice.actions
+export const { openMusic, closeMusic, setMusicSource } = musicSlice.actions
