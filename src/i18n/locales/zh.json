@@ -10,6 +10,7 @@
     "generator": "表情包生成器",
     "inspiration": "灵感来源于"
   },
+  "error": "不好意思，我们遇到了一些未知错误",
   "index": {
     "title": "请选择难度",
     "easy": "简单模式",
