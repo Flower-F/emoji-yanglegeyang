@@ -16,7 +16,7 @@ interface ModalState {
 const initialState: ModalState = {
   isOpen: false,
   closeOnOverlayClick: true,
-  content: <div></div>,
+  content: null,
 }
 
 export const modalSlice = createSlice({

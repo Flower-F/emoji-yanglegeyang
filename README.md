@@ -29,9 +29,6 @@ Assets are from [Fluent Emoji](https://github.com/microsoft/fluentui-emoji) by M
   - ✅ Foresee
   - ✅ Destroy
 - ✅ Music playing
-- ⬜ Animation
-  - ⬜ Loading animation
-  - ⬜ Icon dropped animation
 - ⬜ Advertisement
 
 ## Tech Stack

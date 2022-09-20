@@ -16,6 +16,7 @@
     "medium": "中モード",
     "difficult": "困難モード",
     "hell": "テロモード",
+    "yanglegeyang": "ヒツジ遊び",
     "custom": "カスタム＃カスタム＃"
   },
   "game": {
@@ -44,6 +45,7 @@
     "slotArea": "スロット領域",
     "slotNum": "スロット数",
     "submit": "送信",
+    "reset": "リセット",
     "submitSuccess": "コミット成功",
     "startGame": "ゲームを始める"
   }

@@ -16,6 +16,7 @@
     "medium": "中等模式",
     "difficult": "困难模式",
     "hell": "地狱模式",
+    "yanglegeyang": "羊了个羊模式",
     "custom": "自定义模式"
   },
   "game": {
@@ -44,6 +45,7 @@
     "slotArea": "槽区",
     "slotNum": "槽数",
     "submit": "提交",
+    "reset": "重置",
     "submitSuccess": "提交成功",
     "startGame": "开始游戏"
   }

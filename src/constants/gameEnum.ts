@@ -16,6 +16,8 @@ export enum GameDifficulty {
   HARD,
   /** 地狱 */
   HELL,
+  /** 羊了个羊 */
+  YANG_LE_GE_YANG,
 }
 
 /** 游戏状态 */

@@ -23,6 +23,7 @@ const IndexPage = () => {
         <button className="btn max-w-80%" text-xl onClick={() => goToGamePage(GameDifficulty.MEDIUM)}>{t('index.medium')}</button>
         <button className="btn max-w-80%" text-xl onClick={() => goToGamePage(GameDifficulty.HARD)}>{t('index.difficult')}</button>
         <button className="btn max-w-80%" text-xl onClick={() => goToGamePage(GameDifficulty.HELL)}>{t('index.hell')}</button>
+        <button className="btn max-w-80%" text-xl onClick={() => goToGamePage(GameDifficulty.YANG_LE_GE_YANG)}>{t('index.yanglegeyang')}</button>
         <button className="btn max-w-80%" text-xl onClick={goToCustomPage}>{t('index.custom')}</button>
       </div>
     </div>

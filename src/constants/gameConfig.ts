@@ -37,16 +37,27 @@ export const hellGameConfig: GameConfig = {
   randomBlocks: [8, 8],
 }
 
+/** 羊了个羊难度 */
+export const yanglegeyangConfig: GameConfig = {
+  slotNum: 7,
+  composedNum: 3,
+  blockNumPerLevel: 28,
+  levelNum: 15,
+  randomBlocks: [8, 8],
+}
+
 /** 根据难度获取配置 */
 export const getGameConfig = (config: GameDifficulty) => {
   switch (config) {
-    case GameDifficulty.MEDIUM:
-      return mediumGameConfig
+    case GameDifficulty.EASY:
+      return easyGameConfig
     case GameDifficulty.HARD:
       return hardGameConfig
     case GameDifficulty.HELL:
       return hellGameConfig
+    case GameDifficulty.YANG_LE_GE_YANG:
+      return yanglegeyangConfig
     default:
-      return easyGameConfig
+      return mediumGameConfig
   }
 }

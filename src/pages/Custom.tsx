@@ -1,4 +1,5 @@
 import CustomCounter from '~/components/CustomCounter'
+import { mediumGameConfig } from '~/constants'
 import { closeModal, openModal, setGameConfig, setModalContent } from '~/store'
 import type { GameConfig } from '~/types/game'
 
@@ -20,6 +21,19 @@ const CustomPage = () => {
     navigate('/game')
   })
 
+  const openSuccessModal = () => {
+    dispatch(setModalContent(
+      <div flex flex-col justify-center items-center>
+        <div my-3 text-teal-9>{t('custom.submitSuccess')}</div>
+        <button flex items-center gap-2 className="btn" onClick={startGame}>
+          <div>{t('custom.startGame')}</div>
+          <div i-carbon-game-console></div>
+        </button>
+      </div>,
+    ))
+    dispatch(openModal())
+  }
+
   const submitParams = useMemoizedFn(() => {
     const slotNum = slotNumRef.current.getCount()
     const composedNum = composedNumRef.current.getCount()
@@ -36,17 +50,12 @@ const CustomPage = () => {
       randomBlocks: new Array(randomRowNum).fill(randomColNum),
     }
     dispatch(setGameConfig(newGameConfig))
+    openSuccessModal()
+  })
 
-    dispatch(setModalContent(
-      <div flex flex-col justify-center items-center>
-        <div my-3 text-teal-9>{t('custom.submitSuccess')}</div>
-        <button flex items-center gap-2 className="btn" onClick={startGame}>
-          <div>{t('custom.startGame')}</div>
-          <div i-carbon-game-console></div>
-        </button>
-      </div>,
-    ))
-    dispatch(openModal())
+  const resetParams = useMemoizedFn(() => {
+    dispatch(setGameConfig(mediumGameConfig))
+    openSuccessModal()
   })
 
   return (
@@ -69,9 +78,14 @@ const CustomPage = () => {
         <h3 font-extrabold>{t('custom.slotArea')}</h3>
         <CustomCounter initialCount={gameConfig.slotNum} title={t('custom.slotNum')} ref={slotNumRef} />
       </div>
-      <button onClick={submitParams} className="btn w-100px mx-auto">
-        {t('custom.submit')}
-      </button>
+      <div flex items-center justify-center gap-3>
+        <button onClick={submitParams} className="btn w-100px">
+          {t('custom.submit')}
+        </button>
+        <button onClick={resetParams} className="btn w-100px">
+          {t('custom.reset')}
+        </button>
+      </div>
     </div>
   )
 }

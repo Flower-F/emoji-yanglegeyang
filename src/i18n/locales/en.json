@@ -16,6 +16,7 @@
     "medium": "Medium",
     "difficult": "Hard",
     "hell": "Terrifying",
+    "yanglegeyang": "Sheep Game",
     "custom": "Custom"
   },
   "game": {
@@ -44,6 +45,7 @@
     "slotArea": "Slot area",
     "slotNum": "Slot number",
     "submit": "Submit",
+    "reset": "Reset",
     "submitSuccess": "Submitted successfully",
     "startGame": "Start game"
   }
