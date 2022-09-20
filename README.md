@@ -26,7 +26,7 @@ Assets are from [Fluent Emoji](https://github.com/microsoft/fluentui-emoji) by M
 - ✅ Dark mode & light mode
 - ⬜ Skill
   - ✅ Shuffle
-  - ⬜ Undo
+  - ✅ Undo
   - ✅ Foresee
   - ⬜ Destroy
 - ✅ Music playing

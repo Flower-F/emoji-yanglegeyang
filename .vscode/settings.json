@@ -35,15 +35,11 @@
     "editor.defaultFormatter": "stylelint.vscode-stylelint",
   },
   "cSpell.words": [
-    "antfu",
-    "degit",
     "persistor",
     "revitesse",
     "unocss",
-    "vitesse",
     "vitest",
     "yanglegeyang",
-    "ysmy",
     "yulegeyu"
   ],
   "testing.automaticallyOpenPeekView": "never",

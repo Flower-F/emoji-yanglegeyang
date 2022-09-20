@@ -2,8 +2,6 @@
 export enum BlockStatus {
   /** 初始化 */
   READY,
-  /** 点击后 */
-  CLICKED,
   /** 消失 */
   DISAPPEARED,
 }

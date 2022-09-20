@@ -35,6 +35,7 @@ const GamePage = () => {
     shuffleSkill,
     foreseeSkill,
     undoSkill,
+    destroySkill,
   } = useGame(images)
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -197,10 +198,10 @@ const GamePage = () => {
         </div>
         {/* 技能区 */}
         <div w-150px ml-3 flex flex-col gap-2 justify-center items-center text-teal-9>
-          <button w-full rounded-2 p-1px border-teal-4 border-2 onClick={shuffleSkill}>{t('game.shuffle')}</button>
-          <button w-full rounded-2 p-1px border-teal-4 border-2 onClick={undoSkill}>{t('game.undo')}</button>
-          <button w-full rounded-2 p-1px border-teal-4 border-2 onClick={foreseeSkill}>{t('game.foresee')}</button>
-          <button w-full rounded-2 p-1px border-teal-4 border-2>{t('game.destroy')}</button>
+          <button w-full rounded-2 p-1px border-teal-5 border-2 onClick={shuffleSkill}>{t('game.shuffle')}</button>
+          <button w-full rounded-2 p-1px border-teal-5 border-2 onClick={undoSkill}>{t('game.undo')}</button>
+          <button w-full rounded-2 p-1px border-teal-5 border-2 onClick={foreseeSkill}>{t('game.foresee')}</button>
+          <button w-full rounded-2 p-1px border-teal-5 border-2 onClick={destroySkill}>{t('game.destroy')}</button>
         </div>
       </div>
     </div>

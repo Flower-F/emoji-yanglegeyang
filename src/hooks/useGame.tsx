@@ -251,7 +251,7 @@ const useGame = (emojis: string[]) => {
     }
 
     // 设置状态
-    block.status = BlockStatus.CLICKED
+    block.status = BlockStatus.DISAPPEARED
 
     // 将元素从分层区和随机区移除
     if (randomRowIndex >= 0) {
@@ -307,7 +307,7 @@ const useGame = (emojis: string[]) => {
     }
   }
 
-  /** 打乱分层区的块 */
+  /** 打乱：打乱分层区的块 */
   const shuffleSkill = () => {
     const existBlocks = state.levelBlocks.filter(item => item.status === BlockStatus.READY)
     const newEmojis = shuffle(existBlocks.map(block => block.emoji))
@@ -316,12 +316,12 @@ const useGame = (emojis: string[]) => {
     })
   }
 
-  /** 透视随机区的块 */
+  /** 预知：透视随机区的块 */
   const foreseeSkill = () => {
     state.foresee = true
   }
 
-  /** 撤回上一步操作 */
+  /** 撤回：撤回上一步操作 */
   const undoSkill = () => {
     if (operationsStack.length < 1) {
       return
@@ -331,6 +331,35 @@ const useGame = (emojis: string[]) => {
       item.status = BlockStatus.READY
       slotsMap.get(item.emoji)?.pop()
       generateSlotBlocks()
+    }
+  }
+
+  /** 毁灭：消除一组块 */
+  const destroySkill = () => {
+    const blocks = state.levelBlocks.filter(block => block.status === BlockStatus.READY)
+
+    const levelBlocksMap = new Map<string, BlockType[]>()
+    for (let i = 0; i < blocks.length; i++) {
+      if (!levelBlocksMap.has(blocks[i].emoji)) {
+        levelBlocksMap.set(blocks[i].emoji, [])
+      }
+
+      const emojiBlocks = levelBlocksMap.get(blocks[i].emoji)
+
+      if (emojiBlocks) {
+        emojiBlocks.push(blocks[i])
+        if (emojiBlocks.length >= gameConfig.composedNum) {
+          operationsStack.length = 0
+          emojiBlocks.forEach((block) => {
+            state.disappearedBlockNum++
+            block.status = BlockStatus.DISAPPEARED
+            block.blocksHigherThan.forEach((blockHigher) => {
+              remove(blockHigher.blocksLowerThan, blockLower => blockLower.id === block.id)
+            })
+          })
+          break
+        }
+      }
     }
   }
 
@@ -347,6 +376,7 @@ const useGame = (emojis: string[]) => {
     shuffleSkill: useMemoizedFn(shuffleSkill),
     foreseeSkill: useMemoizedFn(foreseeSkill),
     undoSkill: useMemoizedFn(undoSkill),
+    destroySkill: useMemoizedFn(destroySkill),
   }
 }
 
