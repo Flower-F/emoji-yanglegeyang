@@ -9,8 +9,8 @@ import type { BlockType, BoardUnitType } from '~/types/block'
 const slotsMap = new Map<string, BlockType[]>()
 /** 保存棋盘每个格子的状态（下标为格子起始点横纵坐标） */
 let board: BoardUnitType[][] = []
-/** 保存操作记录（存储点击的块） */
-const operationRecord: BlockType[] = []
+/** 用一个栈保存操作记录（存储点击的块） */
+const operationsStack: BlockType[] = []
 /** 当前占据的槽数 */
 let currentSlotNum = 0
 
@@ -198,6 +198,7 @@ const useGame = (emojis: string[]) => {
     state.disappearedBlockNum = 0
     state.foresee = false
     currentSlotNum = 0
+    operationsStack.length = 0
     initBlocksData()
     state.gameStatus = GameStatus.PLAYING
   }
@@ -217,6 +218,21 @@ const useGame = (emojis: string[]) => {
         </button>
       </div>
     )
+  }
+
+  /** 辅助函数，根据 slotsMap 生成当前的 slotBlocks */
+  const generateSlotBlocks = () => {
+    const newSlotBlocks: (BlockType | null)[] = []
+    slotsMap.forEach((arr) => {
+      arr.forEach((item) => {
+        newSlotBlocks.push(item)
+      })
+    })
+    currentSlotNum = newSlotBlocks.length
+    while (newSlotBlocks.length < gameConfig.slotNum) {
+      newSlotBlocks.push(null)
+    }
+    state.slotBlocks = newSlotBlocks
   }
 
   /**
@@ -239,6 +255,7 @@ const useGame = (emojis: string[]) => {
 
     // 将元素从分层区和随机区移除
     if (randomRowIndex >= 0) {
+      operationsStack.length = 0
       if (state.foresee) {
         // 预知状态下之后可以随便移除随机区元素
         state.randomBlocks[randomRowIndex].splice(randomColIndex, 1)
@@ -248,15 +265,13 @@ const useGame = (emojis: string[]) => {
       }
     } else {
       // 非随机区才可撤回
-      operationRecord.push(block)
+      operationsStack.push(block)
       // 移除覆盖关系
       block.blocksHigherThan.forEach((blockHigher) => {
         remove(blockHigher.blocksLowerThan, blockLower => blockLower.id === block.id)
       })
     }
 
-    // 新元素加入插槽
-    state.slotBlocks[currentSlotNum] = block
     if (!slotsMap.has(block.emoji)) {
       slotsMap.set(block.emoji, [])
     }
@@ -265,7 +280,7 @@ const useGame = (emojis: string[]) => {
     const arr = slotsMap.get(block.emoji)
     if (arr && arr.length >= gameConfig.composedNum) {
       // 消除成功，不可以再撤回了
-      operationRecord.length = 0
+      operationsStack.length = 0
       for (let i = 0; i < gameConfig.composedNum; i++) {
         arr.shift()
         state.disappearedBlockNum++
@@ -275,18 +290,7 @@ const useGame = (emojis: string[]) => {
       }
     }
 
-    const newSlotBlocks: (BlockType | null)[] = []
-    slotsMap.forEach((arr) => {
-      arr.forEach((item) => {
-        newSlotBlocks.push(item)
-      })
-    })
-
-    currentSlotNum = newSlotBlocks.length
-    while (newSlotBlocks.length < gameConfig.slotNum) {
-      newSlotBlocks.push(null)
-    }
-    state.slotBlocks = newSlotBlocks
+    generateSlotBlocks()
 
     if (currentSlotNum >= gameConfig.slotNum) {
       // 你输了
@@ -304,7 +308,7 @@ const useGame = (emojis: string[]) => {
   }
 
   /** 打乱分层区的块 */
-  const shuffleLevelBlocks = () => {
+  const shuffleSkill = () => {
     const existBlocks = state.levelBlocks.filter(item => item.status === BlockStatus.READY)
     const newEmojis = shuffle(existBlocks.map(block => block.emoji))
     existBlocks.forEach((block, index) => {
@@ -313,8 +317,21 @@ const useGame = (emojis: string[]) => {
   }
 
   /** 透视随机区的块 */
-  const foreseeRandomBlocks = () => {
+  const foreseeSkill = () => {
     state.foresee = true
+  }
+
+  /** 撤回上一步操作 */
+  const undoSkill = () => {
+    if (operationsStack.length < 1) {
+      return
+    }
+    const item = operationsStack.pop()
+    if (item) {
+      item.status = BlockStatus.READY
+      slotsMap.get(item.emoji)?.pop()
+      generateSlotBlocks()
+    }
   }
 
   return {
@@ -327,8 +344,9 @@ const useGame = (emojis: string[]) => {
     foresee: state.foresee,
     startGame: useMemoizedFn(startGame),
     clickBlock: useMemoizedFn(clickBlock),
-    shuffleLevelBlocks: useMemoizedFn(shuffleLevelBlocks),
-    foreseeRandomBlocks: useMemoizedFn(foreseeRandomBlocks),
+    shuffleSkill: useMemoizedFn(shuffleSkill),
+    foreseeSkill: useMemoizedFn(foreseeSkill),
+    undoSkill: useMemoizedFn(undoSkill),
   }
 }
 

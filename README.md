@@ -16,7 +16,7 @@ Assets are from [Fluent Emoji](https://github.com/microsoft/fluentui-emoji) by M
 
 - ⬜ Difficulty configuration
   - ✅ Four kinds of prepared difficulties
-  - ⬜ Self made difficulty
+  - ⬜ Self designed difficulty
 - ⬜ Core logics
   - ✅ Map generating 
   - ✅ Basic click events
@@ -25,9 +25,9 @@ Assets are from [Fluent Emoji](https://github.com/microsoft/fluentui-emoji) by M
 - ✅ I18n
 - ✅ Dark mode & light mode
 - ⬜ Skill
-  - ⬜ Shuffle
+  - ✅ Shuffle
   - ⬜ Undo
-  - ⬜ Foresee
+  - ✅ Foresee
   - ⬜ Destroy
 - ✅ Music playing
 - ⬜ Advertisement

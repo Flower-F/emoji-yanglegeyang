@@ -18,7 +18,7 @@ const modalStyles: ReactModal.Styles = {
   },
   overlay: {
     background: 'rgba(0, 0, 0, 0.72)',
-    zIndex: 100,
+    zIndex: 9999,
   },
 }
 
