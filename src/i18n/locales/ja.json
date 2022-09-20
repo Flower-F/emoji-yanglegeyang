@@ -31,5 +31,20 @@
     "undo": "前へ",
     "foresee": "予知",
     "destroy": "破滅"
+  },
+  "custom": {
+    "basicParams": "基本構成",
+    "composedNum": "組合せ数",
+    "levelArea": "階層領域",
+    "blockNumPerLevel": "レイヤーあたりのブロック数",
+    "levelNum": "階層数",
+    "randomArea": "ランダム領域",
+    "randomAreaRowNum": "ランダム領域の行数",
+    "randomAreaColNum": "ランダム領域列数",
+    "slotArea": "スロット領域",
+    "slotNum": "スロット数",
+    "submit": "送信",
+    "submitSuccess": "コミット成功",
+    "startGame": "ゲームを始める"
   }
 }

@@ -14,24 +14,25 @@ Assets are from [Fluent Emoji](https://github.com/microsoft/fluentui-emoji) by M
 
 ## Features
 
-- ⬜ Difficulty configuration
+- ✅ Difficulty configuration
   - ✅ Four kinds of prepared difficulties
-  - ⬜ Self designed difficulty
-- ⬜ Core logics
+  - ✅ Self designed difficulty
+- ✅ Core logics
   - ✅ Map generating 
   - ✅ Basic click events
   - ✅ Success and failed modal
-  - ⬜ Moving icon after clicking
 - ✅ I18n
 - ✅ Dark mode & light mode
-- ⬜ Skill
+- ✅ Skill
   - ✅ Shuffle
   - ✅ Undo
   - ✅ Foresee
-  - ⬜ Destroy
+  - ✅ Destroy
 - ✅ Music playing
+- ⬜ Animation
+  - ⬜ Loading animation
+  - ⬜ Icon dropped animation
 - ⬜ Advertisement
-- ⬜ Loading animation
 
 ## Tech Stack
 

@@ -35,6 +35,7 @@
     "editor.defaultFormatter": "stylelint.vscode-stylelint",
   },
   "cSpell.words": [
+    "antfu",
     "persistor",
     "revitesse",
     "unocss",

@@ -240,12 +240,11 @@ const useGame = (emojis: string[]) => {
    * @param block 块
    * @param randomRowIndex 随机区域块所在的行数
    * @param randomColIndex 随机区域块所在的列数
-   * @param force 是否强制删除，用于技能区
    */
-  const clickBlock = (block: BlockType, randomRowIndex = -1, randomColIndex = 0, force = false) => {
+  const clickBlock = (block: BlockType, randomRowIndex = -1, randomColIndex = 0) => {
     if (currentSlotNum >= gameConfig.slotNum
       || block.status !== BlockStatus.READY
-      || (block.blocksLowerThan.length > 0 && !force)
+      || (block.blocksLowerThan.length > 0)
       || (randomColIndex !== 0 && !state.foresee)) {
       return
     }

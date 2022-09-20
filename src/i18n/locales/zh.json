@@ -31,5 +31,20 @@
     "undo": "撤回",
     "foresee": "预知",
     "destroy": "毁灭"
+  },
+  "custom": {
+    "basicParams": "基本配置",
+    "composedNum": "组合数量",
+    "levelArea": "分层区",
+    "blockNumPerLevel": "每层块数",
+    "levelNum": "层数",
+    "randomArea": "随机区",
+    "randomAreaRowNum": "随机区行数",
+    "randomAreaColNum": "随机区列数",
+    "slotArea": "槽区",
+    "slotNum": "槽数",
+    "submit": "提交",
+    "submitSuccess": "提交成功",
+    "startGame": "开始游戏"
   }
 }
