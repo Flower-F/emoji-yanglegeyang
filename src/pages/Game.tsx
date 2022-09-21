@@ -66,41 +66,41 @@ const GamePage = () => {
     } as CSSProperties
   })
 
-  const randomBlockStyle = useMemoizedFn((index: number) => {
+  const randomBlockStyle: (index: number) => CSSProperties = useMemoizedFn((index: number) => {
     return {
       cursor: index === 0 || foresee ? 'pointer' : 'not-allowed',
-    } as CSSProperties
+    }
   })
 
-  const levelBlockImageStyle = useMemoizedFn((item: BlockType) => {
+  const levelBlockImageStyle: (item: BlockType) => CSSProperties = useMemoizedFn((item: BlockType) => {
     return {
       opacity: item.blocksLowerThan.length > 0 ? '0.6' : '1',
-    } as CSSProperties
+    }
   })
 
-  const boardStyle = useMemoizedFn(() => {
+  const boardStyle: () => CSSProperties = useMemoizedFn(() => {
     return {
       width: `${UNIT_SIZE * BOARD_UNIT}px`,
       height: `${UNIT_SIZE * BOARD_UNIT}px`,
-    } as CSSProperties
+    }
   })
 
-  const containerStyle = useMemoizedFn(() => {
+  const containerStyle: () => CSSProperties = useMemoizedFn(() => {
     return {
       maxWidth: `${UNIT_SIZE * BOARD_UNIT + 25}px`,
-    } as CSSProperties
+    }
   })
 
-  const headerStyle = useMemoizedFn(() => {
+  const headerStyle: () => CSSProperties = useMemoizedFn(() => {
     if (!responsive.md) {
       return {
         maxWidth: `${UNIT_SIZE * BOARD_UNIT + 25}px`,
-      } as CSSProperties
+      }
     } else {
       return {
         maxWidth: '580px',
         marginBottom: '36px',
-      } as CSSProperties
+      }
     }
   })
 

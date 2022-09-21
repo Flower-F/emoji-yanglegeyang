@@ -1,6 +1,6 @@
 const ComLoading = () => {
   return (
-    <div>Loading...</div>
+    <div animate-bounce mt-10px>Loading...</div>
   )
 }
 
