@@ -158,9 +158,9 @@ const EmojiPage = () => {
         images.forEach((img) => {
           img && ctx.drawImage(img, 0, 0, CANVAS_LENGTH, CANVAS_LENGTH)
         })
-        canvas.current?.classList.add('animation')
+        canvas.current?.classList.add('animate-bounce-in')
         setTimeout(() => {
-          canvas.current?.classList.remove('animation')
+          canvas.current?.classList.remove('animate-bounce-in')
         }, 500)
       }
     }).catch((e) => {

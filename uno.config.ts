@@ -30,7 +30,7 @@ export default defineConfig({
       },
     }),
   ],
-  safelist: ['bg-teal-4', 'dark:bg-teal-4', 'bg-teal-1', 'dark:bg-#333'],
+  safelist: ['bg-teal-4', 'dark:bg-teal-4', 'bg-teal-1', 'dark:bg-#333', 'animate-bounce-in'],
   transformers: [
     transformerAttributifyJsx(),
   ],
