@@ -26,6 +26,7 @@ Assets are from [Fluent Emoji](https://github.com/microsoft/fluentui-emoji) by M
   - ✅ Destroy
 - ✅ Music playing
 - ✅ Advertisement
+- ✅ Emojis Making
 
 ## Tech Stack
 
