@@ -23,7 +23,7 @@ const IndexPage = () => {
         <button className="btn max-w-80%" text-xl onClick={() => goToGamePage(GameDifficulty.HELL)}>{t('index.hell')}</button>
         <button className="btn max-w-80%" text-xl onClick={() => goToGamePage(GameDifficulty.YANG_LE_GE_YANG)}>{t('index.yanglegeyang')}</button>
         <Link className="btn max-w-80%" text-xl to="custom">{t('index.custom')}</Link>
-        <Link dashed-link max-w-200px mt-4 to="emoji">{t('index.emoji')}</Link>
+        <Link dashed-link text-teal-8 dark:text-teal-5 max-w-200px mt-4 to="emoji">{t('index.emoji')}</Link>
       </div>
     </div>
   )

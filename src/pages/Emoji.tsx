@@ -135,36 +135,40 @@ const EmojiPage = () => {
         flex flex-wrap justify-center items-center gap-3 p-4
         border="b neutral-4 op-20" className="w-85%"
       >
-        {tabs.map((tab, index) => (
-          <button
-            key={tab + index}
-            flex items-center justify-center cursor-pointer transition-colors h-16 w-16 rounded-lg
-            border="~ teal-7 dark:teal-2 op-40"
-            hover="bg-teal-4 dark:bg-teal-3 border-2 border-op-90"
-            onClick={() => setSelectedTab(tab)}
-            className={`${tab === selectedTab ? 'bg-teal-3 dark:bg-teal-3' : 'bg-teal-1 dark:bg-#333'}`}
-          >
-            {currentEmoji[tab] && <img h-12 w-12 rounded-lg src={currentEmoji[tab]} alt={tab} />}
-          </button>
-        ))}
+        {
+          tabs.map((tab, index) => (
+            <button
+              key={tab + index}
+              flex items-center justify-center cursor-pointer transition-colors h-16 w-16 rounded-lg
+              border="~ teal-7 dark:teal-2 op-40"
+              hover="bg-teal-4 dark:bg-teal-3 border-2 border-op-90"
+              onClick={() => setSelectedTab(tab)}
+              className={`${tab === selectedTab ? 'bg-teal-3 dark:bg-teal-3' : 'bg-teal-1 dark:bg-#333'}`}
+            >
+              {currentEmoji[tab] && <img h-12 w-12 rounded-lg src={currentEmoji[tab]} alt={tab} />}
+            </button>
+          ))
+        }
       </div>
 
       {/* 二级选择区域 */}
       <div p-4 flex items-center justify-center flex-wrap gap-3 className="w-85%">
-        {(Object.keys(currentImages) as (keyof typeof currentImages)[]).map(tab => (
-          selectedTab === tab && currentImages[tab].map((image, index) => (
-            <button
-              key={tab + index}
-              flex items-center justify-center cursor-pointer transition-colors h-12 w-12 rounded-lg
-              border="~ teal-7 dark:teal-2 op-40"
-              hover="bg-teal-4 dark:bg-teal-3 border-2 border-op-90"
-              onClick={() => selectItem({ tab, index })}
-              className={`${emojiIndex[selectedTab] === index ? 'bg-teal-3 dark:bg-teal-3' : 'bg-teal-1 dark:bg-#333'}`}
-            >
-              {image && <img h-10 w-10 rounded-lg src={image} alt={tab + index} />}
-            </button>
+        {
+          (Object.keys(currentImages) as (keyof typeof currentImages)[]).map(tab => (
+            selectedTab === tab && currentImages[tab].map((image, index) => (
+              <button
+                key={tab + index}
+                flex items-center justify-center cursor-pointer transition-colors h-12 w-12 rounded-lg
+                border="~ teal-7 dark:teal-2 op-40"
+                hover="bg-teal-4 dark:bg-teal-3 border-2 border-op-90"
+                onClick={() => selectItem({ tab, index })}
+                className={`${emojiIndex[selectedTab] === index ? 'bg-teal-3 dark:bg-teal-3' : 'bg-teal-1 dark:bg-#333'}`}
+              >
+                {image && <img h-10 w-10 rounded-lg src={image} alt={tab + index} />}
+              </button>
+            ))
           ))
-        ))}
+        }
       </div>
     </div>
   )

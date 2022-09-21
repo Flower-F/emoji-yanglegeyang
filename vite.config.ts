@@ -51,7 +51,7 @@ export default defineConfig(({ mode }) => {
     }
     options.build = {
       minify: 'esbuild',
-      target: 'ES2015',
+      target: 'es2015',
       rollupOptions: {
         output: {
           manualChunks: {
