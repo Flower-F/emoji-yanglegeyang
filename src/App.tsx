@@ -20,7 +20,7 @@ const App = () => {
         <TheModal />
         <ThePlayer />
         <PersistGate loading={null} persistor={persistor}>
-          <main font-sans h-full p="x-4 y-6" text="center black dark:neutral-1">
+          <main font-sans h-full p="x4 y6" text="center black dark:neutral-1">
             <TheHeader />
               <Suspense fallback={<ComLoading />}>
                 {useRoutes(routes)}

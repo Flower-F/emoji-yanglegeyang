@@ -179,10 +179,10 @@ const GamePage = () => {
                     {
                       randomBlocks.map((randomBlock, outIndex) => (
                         randomBlock.length > 0 && (
-                          <div key={outIndex} flex flex-wrap justify-center items-center gap-2 bg-teal-4 p="x-6px y-10px" mx-auto rounded-2>
+                          <div key={outIndex} flex flex-wrap justify-center items-center gap-2 bg-teal-4 p="x1.5 y3" mx-auto rounded-2>
                             {
                               randomBlock.map((item, index) => (
-                                <button key={index} rounded-2 bg-white w-36px h-36px p-1px onClick={() => clickBlock(item, outIndex, index)} style={randomBlockStyle(index)}>
+                                <button key={index} rounded-2 bg-white w-40px h-40px p-1px onClick={() => clickBlock(item, outIndex, index)} style={randomBlockStyle(index)}>
                                   {
                                     index === 0 || foresee
                                       ? <img src={item.emoji} w-full h-full rounded-2 alt={`Random emoji${index}`} />

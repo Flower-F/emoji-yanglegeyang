@@ -90,6 +90,34 @@ const useGame = (emojis: string[]) => {
     block.level = maxLevel + 1
   }
 
+  /** 辅助函数 给撤回的块绑定双向关系，用于确认哪些元素是当前可点击的 */
+  const generateUndoTwoWayRelation = (block: BlockType) => {
+    // 可能产生重叠的范围
+    const minX = Math.max(block.x - BLOCK_UNIT + 1, 0)
+    const minY = Math.max(block.y - BLOCK_UNIT + 1, 0)
+    const maxX = Math.min(block.x + BLOCK_UNIT - 1, BOARD_UNIT - BLOCK_UNIT)
+    const maxY = Math.min(block.y + BLOCK_UNIT - 1, BOARD_UNIT - BLOCK_UNIT)
+
+    // 遍历该块附近的格子
+    for (let i = minX; i <= maxX; i++) {
+      for (let j = minY; j <= maxY; j++) {
+        const relationBlocks = board[i][j].blocks
+
+        let len = relationBlocks.length - 1
+        while (len >= 0) {
+          // 取当前位置最高层的块
+          const maxLevelRelationBlock = relationBlocks[len--]
+          // 排除自己和高于自己的块
+          if (maxLevelRelationBlock.id === block.id || maxLevelRelationBlock.level >= block.level) {
+            continue
+          }
+          block.blocksHigherThan.push(maxLevelRelationBlock)
+          maxLevelRelationBlock.blocksLowerThan.push(block)
+        }
+      }
+    }
+  }
+
   /** 辅助函数 生成块坐标  */
   const generateLevelBlockPosition = (blocks: BlockType[], { minX, minY, maxX, maxY }: { minX: number; minY: number; maxX: number; maxY: number }) => {
     // 保证同一层块不会完全重叠
@@ -331,7 +359,7 @@ const useGame = (emojis: string[]) => {
       item.status = BlockStatus.READY
       slotsMap.get(item.emoji)?.pop()
       generateSlotBlocks()
-      generateTwoWayRelation(item)
+      generateUndoTwoWayRelation(item)
     }
   }
 
