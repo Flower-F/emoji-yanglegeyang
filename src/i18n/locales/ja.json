@@ -6,9 +6,8 @@
     "github": "Github リンク＃リンク＃"
   },
   "footer": {
-    "assets": "画像の作成",
-    "generator": "表情が生まれる",
-    "inspiration": "インスピレーション源"
+    "inspiration": "インスピレーション源",
+    "source": "ソースコード"
   },
   "error": "申し訳ありませんが、未知のエラーに遭遇しました",
   "index": {
@@ -18,7 +17,8 @@
     "difficult": "困難モード",
     "hell": "テロモード",
     "yanglegeyang": "ヒツジ遊び",
-    "custom": "カスタム＃カスタム＃"
+    "custom": "カスタム＃カスタム＃",
+    "emoji": "表情パックを作りたい"
   },
   "game": {
     "success": "お前の勝ち",
@@ -49,5 +49,10 @@
     "reset": "リセット",
     "submitSuccess": "コミット成功",
     "startGame": "ゲームを始める"
+  },
+  "emoji": {
+    "randomize": "ランダム",
+    "download": "ダウンロード",
+    "undo": "リターンマッチ"
   }
 }

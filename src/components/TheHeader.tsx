@@ -1,9 +1,10 @@
+import { Link } from 'react-router-dom'
+
 import i18n, { resources } from '~/i18n'
 
 const TheHeader = () => {
   const { toggleDark } = useDark()
   const { t } = useTranslation()
-  const navigate = useNavigate()
 
   const [language, setLanguage] = useLocalStorageState(
     'lang',
@@ -21,10 +22,10 @@ const TheHeader = () => {
   return (
     <header flex justify-between items-center mb-2 pb-4 text="xl black dark:neutral-2">
       <h1>
-        <button flex items-center gap-2 text-lg font-extrabold tracking-wide onClick={() => navigate('/')}>
+        <Link flex items-center gap-2 text-lg font-extrabold tracking-wide to="/">
           <img src="/favicon.svg" alt="logo" w-6 h-6 pb-1px />
           {t('title')}
-        </button>
+        </Link>
       </h1>
 
       <nav text-xl inline-flex items-center gap-3>

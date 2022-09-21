@@ -6,19 +6,19 @@
     "github": "Github link"
   },
   "footer": {
-    "assets": "Emojis made by",
-    "generator": "Emoji Generator",
-    "inspiration": "Strongly inspired by"
+    "inspiration": "Strongly inspired by",
+    "source": "Source code"
   },
   "error": "Sorry, we met some errors",
   "index": {
-    "title": "Select difficulty",
+    "title": "Select Difficulty",
     "easy": "Simple",
     "medium": "Medium",
     "difficult": "Hard",
     "hell": "Terrifying",
     "yanglegeyang": "Sheep Game",
-    "custom": "Custom"
+    "custom": "Custom",
+    "emoji": "Make emoji by myself"
   },
   "game": {
     "success": "You Win",
@@ -35,19 +35,24 @@
     "destroy": "Destroy"
   },
   "custom": {
-    "basicParams": "Basic params",
-    "composedNum": "Composed number",
-    "levelArea": "Level area",
-    "blockNumPerLevel": "Block number per level",
-    "levelNum": "Level number",
-    "randomArea": "Random area",
-    "randomAreaRowNum": "Random area row number",
-    "randomAreaColNum": "Random area col number",
-    "slotArea": "Slot area",
-    "slotNum": "Slot number",
+    "basicParams": "Basic Params",
+    "composedNum": "Composed Number",
+    "levelArea": "Level Area",
+    "blockNumPerLevel": "Block Number Per Level",
+    "levelNum": "Level Number",
+    "randomArea": "Random Area",
+    "randomAreaRowNum": "Random Area Row Number",
+    "randomAreaColNum": "Random Area Col Number",
+    "slotArea": "Slot Area",
+    "slotNum": "Slot Number",
     "submit": "Submit",
     "reset": "Reset",
-    "submitSuccess": "Submitted successfully",
-    "startGame": "Start game"
+    "submitSuccess": "Submitted Successfully",
+    "startGame": "Start Game"
+  },
+  "emoji": {
+    "randomize": "Randomize",
+    "download": "Download",
+    "undo": "Back"
   }
 }

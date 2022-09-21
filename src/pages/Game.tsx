@@ -7,8 +7,8 @@ import useGame from '~/hooks/useGame'
 import { closeModal, closeMusic, openModal, openMusic, setImages, setModalContent, setMusicSource } from '~/store'
 import type { BlockType } from '~/types/block'
 
-type ImageModule = typeof import('*.png')
-type ImportModuleFunction = () => Promise<ImageModule>
+type PngImageModule = typeof import('*.png')
+type ImportModuleFunction = () => Promise<PngImageModule>
 
 const resolveImportGlobModule = async (modules: Record<string, ImportModuleFunction>) => {
   const imports = Object.values(modules).map(importFn => importFn())
@@ -43,7 +43,7 @@ const GamePage = () => {
   const responsive = useResponsive()
 
   const loadImage = useMemoizedFn(async () => {
-    const modules = import.meta.glob<ImageModule>('~/assets/images/*.png')
+    const modules = import.meta.glob<PngImageModule>('~/assets/images/emojis/*.png')
     const images = await resolveImportGlobModule(modules)
     dispatch(setImages(images))
   })
