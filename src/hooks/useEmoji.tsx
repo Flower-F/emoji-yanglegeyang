@@ -76,7 +76,7 @@ const useEmoji = () => {
     state.selectedTab = tab
   }
 
-  /** 选择 tab */
+  /** 选择图片 */
   const setCurrentImages = (images: { [key in EmojiType]: string[] }) => {
     state.images = images
   }

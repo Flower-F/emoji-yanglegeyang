@@ -19,7 +19,7 @@ class TheErrorBoundary extends Component<PropsWithChildren, ErrorBoundaryState> 
 
   componentDidCatch() {
     // 将错误日志上报给服务器
-    // logErrorToServer(error.message);
+    // logErrorToServer(error.message)
   }
 
   render() {
