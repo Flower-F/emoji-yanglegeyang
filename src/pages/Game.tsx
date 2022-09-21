@@ -40,6 +40,7 @@ const GamePage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const responsive = useResponsive()
 
   const loadImage = useMemoizedFn(async () => {
     const modules = import.meta.glob<ImageModule>('~/assets/images/*.png')
@@ -90,6 +91,19 @@ const GamePage = () => {
     } as CSSProperties
   })
 
+  const headerStyle = useMemoizedFn(() => {
+    if (!responsive.md) {
+      return {
+        maxWidth: `${UNIT_SIZE * BOARD_UNIT + 25}px`,
+      } as CSSProperties
+    } else {
+      return {
+        maxWidth: '580px',
+        marginBottom: '36px',
+      } as CSSProperties
+    }
+  })
+
   const goBackHome = useMemoizedFn(() => {
     dispatch(closeModal())
     navigate('/')
@@ -132,9 +146,9 @@ const GamePage = () => {
   })
 
   return (
-    <div mx-auto flex flex-col justify-center items-center gap-4 style={containerStyle()}>
+    <>
       {/* 头部 */}
-      <div flex justify-between items-center w-full>
+      <div flex justify-between items-center mx-auto mb-2 style={headerStyle()}>
         {/* 分数 */}
         <div className="btn" cursor-none select-none>{disappearedBlockNum} / {totalBlockNum}</div>
         {/* 设置 */}
@@ -142,79 +156,82 @@ const GamePage = () => {
           <div i-carbon-settings w-6 h-6></div>
         </button>
       </div>
-      {
-        gameStatus > GameStatus.READY && images.length > 0
-          ? (
-              <div border-teal-5 border-4 px-10px py-4 rounded-4 bg-teal-1>
-                {/* 分层部分 */}
-                <div relative style={boardStyle()}>
-                  {
-                    levelBlocks.map((item, index) => (
-                      item.status === BlockStatus.READY && (
-                        <button absolute rounded-2 border-teal-4 border-2 p-1px key={index} style={levelBlockStyle(item)} onClick={() => clickBlock(item)}>
-                          <img w-full h-full src={item.emoji} alt={`Layer emoji${index}`} style={levelBlockImageStyle(item)} />
-                        </button>
-                      )
-                    ))
-                  }
+      {/* 分层区和随机区域 */}
+      <div mx-auto flex flex-col md:flex-row justify-center items-center gap-4 style={containerStyle()}>
+        {
+          gameStatus > GameStatus.READY && images.length > 0
+            ? (
+                <div border-teal-5 border-4 px-10px py-4 rounded-4 bg-teal-1>
+                  {/* 分层部分 */}
+                  <div relative style={boardStyle()}>
+                    {
+                      levelBlocks.map((item, index) => (
+                        item.status === BlockStatus.READY && (
+                          <button absolute rounded-2 border-teal-4 border-2 p-1px key={index} style={levelBlockStyle(item)} onClick={() => clickBlock(item)}>
+                            <img w-full h-full src={item.emoji} alt={`Layer emoji${index}`} style={levelBlockImageStyle(item)} />
+                          </button>
+                        )
+                      ))
+                    }
+                  </div>
+                  {/* 随机部分 */}
+                  <div mt-2 flex gap-2 flex-col pt-2>
+                    {
+                      randomBlocks.map((randomBlock, outIndex) => (
+                        randomBlock.length > 0 && (
+                          <div key={outIndex} flex flex-wrap justify-center items-center gap-2 bg-teal-4 p="x-6px y-10px" mx-auto rounded-2>
+                            {
+                              randomBlock.map((item, index) => (
+                                <button key={index} rounded-2 bg-white w-36px h-36px p-1px onClick={() => clickBlock(item, outIndex, index)} style={randomBlockStyle(index)}>
+                                  {
+                                    index === 0 || foresee
+                                      ? <img src={item.emoji} w-full h-full rounded-2 alt={`Random emoji${index}`} />
+                                      : <div w-full h-full bg-gray400 rounded-2></div>
+                                    }
+                                </button>
+                              ))
+                            }
+                          </div>
+                        )
+                      ))
+                    }
+                  </div>
                 </div>
-                {/* 随机部分 */}
-                <div mt-2 flex gap-2 flex-col pt-2>
-                  {
-                    randomBlocks.map((randomBlock, outIndex) => (
-                      randomBlock.length > 0 && (
-                        <div key={outIndex} flex flex-wrap justify-center items-center gap-2 bg-teal-4 p="x-6px y-10px" mx-auto rounded-2>
+              )
+            : <ComLoading />
+        }
+        {/* 槽区与技能区 */}
+        {
+          gameStatus > GameStatus.READY
+            ? (
+                <div flex md:flex-col gap-2 bg-teal-1 p-4 rounded-4 border-teal-5 border-4>
+                  {/* 槽区 */}
+                  <div flex flex-wrap gap-2 justify-center items-center>
+                    {
+                      slotBlocks.map((item, index) => (
+                        <div key={index}>
                           {
-                            randomBlock.map((item, index) => (
-                              <button key={index} rounded-2 bg-white w-36px h-36px onClick={() => clickBlock(item, outIndex, index)} style={randomBlockStyle(index)}>
-                                {
-                                  index === 0 || foresee
-                                    ? <img src={item.emoji} w-full h-full rounded-2 alt={`Random emoji${index}`} />
-                                    : <div w-full h-full bg-gray400 rounded-2></div>
-                                  }
-                              </button>
-                            ))
+                            <div w-10 h-10 bg-white rounded-2 p-1px border-teal-4 border-2>
+                              {item ? <img src={item.emoji} w-full h-full rounded-2 alt={`Emoji${index}`} /> : null}
+                            </div>
                           }
                         </div>
-                      )
-                    ))
-                  }
+                      ))
+                    }
+                  </div>
+                  {/* 技能区 */}
+                  <div flex flex-col gap-2 justify-center items-center text-teal-7>
+                    <button w-100px font-bold rounded-2 p-1px border-teal-5 border-2 onClick={shuffleSkill}>{t('game.shuffle')}</button>
+                    <button w-100px font-bold rounded-2 p-1px border-teal-5 border-2 onClick={undoSkill}>{t('game.undo')}</button>
+                    <button w-100px font-bold rounded-2 p-1px border-teal-5 border-2 onClick={foreseeSkill}>{t('game.foresee')}</button>
+                    <button w-100px font-bold rounded-2 p-1px border-teal-5 border-2 onClick={destroySkill}>{t('game.destroy')}</button>
+                  </div>
                 </div>
-              </div>
-            )
-          : <ComLoading />
-      }
-      {/* 槽与技能区 */}
-      {
-        gameStatus > GameStatus.READY
-          ? (
-              <div flex bg-teal-1 p-4 rounded-4 border-teal-5 border-4>
-                {/* 槽区 */}
-                <div flex flex-wrap gap-2 justify-center items-center>
-                  {
-                    slotBlocks.map((item, index) => (
-                      <div key={index}>
-                        {
-                          <div w-10 h-10 bg-white rounded-2 p-1px border-teal-4 border-2>
-                            {item ? <img src={item.emoji} w-full h-full rounded-2 alt={`Emoji${index}`} /> : null}
-                          </div>
-                        }
-                      </div>
-                    ))
-                  }
-                </div>
-                {/* 技能区 */}
-                <div w-150px ml-3 flex flex-col gap-2 justify-center items-center text-teal-7>
-                  <button w-full font-bold rounded-2 p-1px border-teal-5 border-2 onClick={shuffleSkill}>{t('game.shuffle')}</button>
-                  <button w-full font-bold rounded-2 p-1px border-teal-5 border-2 onClick={undoSkill}>{t('game.undo')}</button>
-                  <button w-full font-bold rounded-2 p-1px border-teal-5 border-2 onClick={foreseeSkill}>{t('game.foresee')}</button>
-                  <button w-full font-bold rounded-2 p-1px border-teal-5 border-2 onClick={destroySkill}>{t('game.destroy')}</button>
-                </div>
-              </div>
-            )
-          : null
-      }
-    </div>
+              )
+            : null
+        }
+      </div>
+    </>
   )
 }
 

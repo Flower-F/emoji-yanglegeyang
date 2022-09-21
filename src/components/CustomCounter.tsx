@@ -26,7 +26,7 @@ const CustomCounter = forwardRef<CustomCounterRef, CustomCounterProps>(({ initia
         <div i-carbon-add></div>
       </button>
       <button number-btn hover:bg-teal-7 hover:text-teal-2 onClick={() => dec()}>
-          <div i-carbon-subtract></div>
+        <div i-carbon-subtract></div>
       </button>
     </div>
   )
