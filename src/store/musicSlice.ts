@@ -8,11 +8,14 @@ interface MusicState {
   isPlaying: boolean
   /** 音乐源 */
   source: string
+  /** 重新设置音源 */
+  reset: boolean
 }
 
 const initialState: MusicState = {
   isPlaying: false,
   source: '',
+  reset: false,
 }
 
 export const musicSlice = createSlice({
@@ -27,8 +30,12 @@ export const musicSlice = createSlice({
     },
     setMusicSource: (state: MusicState, action: PayloadAction<string>) => {
       state.source = action.payload
+      state.reset = true
+    },
+    maintainMusicSource: (state: MusicState) => {
+      state.reset = false
     },
   },
 })
 
-export const { openMusic, closeMusic, setMusicSource } = musicSlice.actions
+export const { openMusic, closeMusic, setMusicSource, maintainMusicSource } = musicSlice.actions

@@ -15,7 +15,7 @@ Assets are from [Fluent Emoji](https://github.com/microsoft/fluentui-emoji) by M
 ## Features
 
 - ✅ Difficulty configuration
-  - ✅ Four kinds of prepared difficulties
+  - ✅ Five kinds of prepared difficulties
   - ✅ Self designed difficulty
 - ✅ Core logics
   - ✅ Map generating 

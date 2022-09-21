@@ -102,13 +102,17 @@ const GamePage = () => {
 
   const toggleMusic = useMemoizedFn(() => {
     if (!isPlaying) {
-      dispatch(setMusicSource(bgm))
       dispatch(openMusic())
     } else {
       dispatch(closeMusic())
     }
     dispatch(closeModal())
   })
+
+  useEffect(() => {
+    dispatch(setMusicSource(bgm))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const showSettingsModal = useMemoizedFn(() => {
     dispatch(setModalContent(
@@ -176,34 +180,40 @@ const GamePage = () => {
                     ))
                   }
                 </div>
-            </div>
+              </div>
             )
           : <ComLoading />
       }
       {/* 槽与技能区 */}
-      <div flex bg-teal-1 p-4 rounded-4 border-teal-5 border-4>
-        {/* 槽区 */}
-        <div flex flex-wrap gap-2 justify-center items-center>
-          {
-            slotBlocks.map((item, index) => (
-              <div key={index}>
-                {
-                  <div w-10 h-10 bg-white rounded-2 p-1px border-teal-4 border-2>
-                    {item ? <img src={item.emoji} w-full h-full rounded-2 alt={`Emoji${index}`} /> : null}
-                  </div>
-                }
+      {
+        gameStatus > GameStatus.READY
+          ? (
+              <div flex bg-teal-1 p-4 rounded-4 border-teal-5 border-4>
+                {/* 槽区 */}
+                <div flex flex-wrap gap-2 justify-center items-center>
+                  {
+                    slotBlocks.map((item, index) => (
+                      <div key={index}>
+                        {
+                          <div w-10 h-10 bg-white rounded-2 p-1px border-teal-4 border-2>
+                            {item ? <img src={item.emoji} w-full h-full rounded-2 alt={`Emoji${index}`} /> : null}
+                          </div>
+                        }
+                      </div>
+                    ))
+                  }
+                </div>
+                {/* 技能区 */}
+                <div w-150px ml-3 flex flex-col gap-2 justify-center items-center text-teal-7>
+                  <button w-full font-bold rounded-2 p-1px border-teal-5 border-2 onClick={shuffleSkill}>{t('game.shuffle')}</button>
+                  <button w-full font-bold rounded-2 p-1px border-teal-5 border-2 onClick={undoSkill}>{t('game.undo')}</button>
+                  <button w-full font-bold rounded-2 p-1px border-teal-5 border-2 onClick={foreseeSkill}>{t('game.foresee')}</button>
+                  <button w-full font-bold rounded-2 p-1px border-teal-5 border-2 onClick={destroySkill}>{t('game.destroy')}</button>
+                </div>
               </div>
-            ))
-          }
-        </div>
-        {/* 技能区 */}
-        <div w-150px ml-3 flex flex-col gap-2 justify-center items-center text-teal-7>
-          <button w-full font-bold rounded-2 p-1px border-teal-5 border-2 onClick={shuffleSkill}>{t('game.shuffle')}</button>
-          <button w-full font-bold rounded-2 p-1px border-teal-5 border-2 onClick={undoSkill}>{t('game.undo')}</button>
-          <button w-full font-bold rounded-2 p-1px border-teal-5 border-2 onClick={foreseeSkill}>{t('game.foresee')}</button>
-          <button w-full font-bold rounded-2 p-1px border-teal-5 border-2 onClick={destroySkill}>{t('game.destroy')}</button>
-        </div>
-      </div>
+            )
+          : null
+      }
     </div>
   )
 }

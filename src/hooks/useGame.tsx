@@ -245,7 +245,7 @@ const useGame = (emojis: string[]) => {
   const clickBlock = (block: BlockType, randomRowIndex = -1, randomColIndex = 0) => {
     if (currentSlotNum >= gameConfig.slotNum
       || block.status !== BlockStatus.READY
-      || (block.blocksLowerThan.length > 0)
+      || block.blocksLowerThan.length > 0
       || (randomColIndex !== 0 && !state.foresee)) {
       return
     }
@@ -331,6 +331,7 @@ const useGame = (emojis: string[]) => {
       item.status = BlockStatus.READY
       slotsMap.get(item.emoji)?.pop()
       generateSlotBlocks()
+      generateTwoWayRelation(item)
     }
   }
 
