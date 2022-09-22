@@ -20,8 +20,8 @@ const resolveImportGlobModule = async (modules: Record<string, ImportModuleFunct
 const UNIT_SIZE = 14
 
 const GamePage = () => {
-  const { images } = useSelector(store => store.image)
-  const { isPlaying } = useSelector(store => store.music)
+  const imageStore = useSelector(store => store.image)
+  const musicStore = useSelector(store => store.music)
   const {
     levelBlocks,
     slotBlocks,
@@ -36,7 +36,7 @@ const GamePage = () => {
     foreseeSkill,
     undoSkill,
     destroySkill,
-  } = useGame(images)
+  } = useGame(imageStore.images)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { t } = useTranslation()
@@ -53,6 +53,13 @@ const GamePage = () => {
       startGame()
     })
   }, [loadImage, startGame])
+
+  useEffect(() => {
+    if (!musicStore.source) {
+      dispatch(setMusicSource(bgm))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [musicStore.source])
 
   const levelBlockStyle = useMemoizedFn((item: BlockType) => {
     return {
@@ -115,18 +122,13 @@ const GamePage = () => {
   })
 
   const toggleMusic = useMemoizedFn(() => {
-    if (!isPlaying) {
+    if (!musicStore.isPlaying) {
       dispatch(openMusic())
     } else {
       dispatch(closeMusic())
     }
     dispatch(closeModal())
   })
-
-  useEffect(() => {
-    dispatch(setMusicSource(bgm))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   const showSettingsModal = useMemoizedFn(() => {
     dispatch(setModalContent(
@@ -137,8 +139,8 @@ const GamePage = () => {
         <button className="btn" p-2 rounded-full onClick={goBackHome} title={t('game.home')}>
           <div i-carbon-home w-6 h-6></div>
         </button>
-        <button className="btn" p-2 rounded-full onClick={toggleMusic} title={isPlaying ? t('game.musicOpen') : t('game.musicClose')}>
-          {isPlaying ? <div i-carbon-music w-6 h-6></div> : <div i-carbon-music-remove w-6 h-6></div>}
+        <button className="btn" p-2 rounded-full onClick={toggleMusic} title={musicStore.isPlaying ? t('game.musicOpen') : t('game.musicClose')}>
+          {musicStore.isPlaying ? <div i-carbon-music w-6 h-6></div> : <div i-carbon-music-remove w-6 h-6></div>}
         </button>
       </div>,
     ))
@@ -159,7 +161,7 @@ const GamePage = () => {
       {/* 分层区和随机区域 */}
       <div mx-auto flex flex-col md:flex-row justify-center items-center gap-4 style={containerStyle()}>
         {
-          gameStatus > GameStatus.READY && images.length > 0
+          gameStatus > GameStatus.READY && imageStore.images.length > 0
             ? (
                 <div border-teal-5 border-4 px-10px py-4 rounded-4 bg-teal-1>
                   {/* 分层部分 */}
@@ -182,7 +184,7 @@ const GamePage = () => {
                           <div key={outIndex} flex flex-wrap justify-center items-center gap-2 bg-teal-4 p="x1.5 y3" mx-auto rounded-2>
                             {
                               randomBlock.map((item, index) => (
-                                <button key={index} rounded-2 bg-white w-40px h-40px p-1px onClick={() => clickBlock(item, outIndex, index)} style={randomBlockStyle(index)}>
+                                <button key={index} rounded-2 bg-white w-42px h-42px onClick={() => clickBlock(item, outIndex, index)} style={randomBlockStyle(index)}>
                                   {
                                     index === 0 || foresee
                                       ? <img src={item.emoji} w-full h-full rounded-2 alt={`Random emoji${index}`} />

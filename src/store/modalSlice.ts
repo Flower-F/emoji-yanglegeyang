@@ -33,10 +33,10 @@ export const modalSlice = createSlice({
     setModalContent: (state: ModalState, action: PayloadAction<ReactNode>) => {
       state.content = action.payload
     },
-    setModalCloseOnOverlayClick: (state: ModalState, action: PayloadAction<boolean>) => {
-      state.closeOnOverlayClick = action.payload
+    banModalCloseOnOverlayClick: (state: ModalState) => {
+      state.closeOnOverlayClick = false
     },
   },
 })
 
-export const { openModal, closeModal, setModalContent, setModalCloseOnOverlayClick } = modalSlice.actions
+export const { openModal, closeModal, setModalContent, banModalCloseOnOverlayClick } = modalSlice.actions

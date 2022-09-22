@@ -2,23 +2,23 @@ import { maintainMusicSource } from '~/store'
 
 const ThePlayer = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null)
-  const { isPlaying, source, reset } = useSelector(store => store.music)
+  const musicStore = useSelector(store => store.music)
   const dispatch = useDispatch()
 
   useUpdateEffect(() => {
     if (!audioRef.current) {
       return
     }
-    if (reset) {
-      audioRef.current.src = source
+    if (musicStore.reset) {
+      audioRef.current.src = musicStore.source
     }
-    if (isPlaying && audioRef.current.src !== '') {
+    if (musicStore.isPlaying && audioRef.current.src !== '') {
       audioRef.current.play()
       dispatch(maintainMusicSource())
     } else {
       audioRef.current.pause()
     }
-  }, [isPlaying, source, reset])
+  }, [musicStore.isPlaying, musicStore.reset, musicStore.source])
 
   return (
     <audio ref={audioRef} loop={true}>

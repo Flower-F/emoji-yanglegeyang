@@ -2,7 +2,7 @@ import { random, remove, shuffle } from 'lodash-es'
 import type { ReactNode } from 'react'
 
 import { BLOCK_UNIT, BlockStatus, BOARD_UNIT, GameStatus } from '~/constants'
-import { closeModal, openModal, setModalCloseOnOverlayClick, setModalContent } from '~/store'
+import { banModalCloseOnOverlayClick, closeModal, openModal, setModalContent } from '~/store'
 import type { BlockType, BoardUnitType } from '~/types/block'
 
 /** 统计是否需要删除槽内容 */
@@ -41,7 +41,7 @@ const useGame = (emojis: string[]) => {
         foresee: false,
       })
 
-  const { gameConfig } = useSelector(store => store.persist.game)
+  const gameStore = useSelector(store => store.persist.game)
   const dispatch = useDispatch()
   const { t } = useTranslation()
 
@@ -143,12 +143,12 @@ const useGame = (emojis: string[]) => {
   /** 初始化槽、随机区、分层区三部分数据，以及生成块总数 */
   const initBlocksData = () => {
     // 1. 规划块数：总块数必须是该值的倍数，才能确保可以生成答案
-    const blockNumUnit = gameConfig.composedNum * emojis.length
+    const blockNumUnit = gameStore.gameConfig.composedNum * emojis.length
     // 随机生成的总块数
-    const totalRandomBlockNum = gameConfig.randomBlocks.reduce((prev, cur) => prev + cur)
+    const totalRandomBlockNum = gameStore.gameConfig.randomBlocks.reduce((prev, cur) => prev + cur)
 
     // 计算需要的最小块数
-    const minBlockNum = gameConfig.levelNum * gameConfig.blockNumPerLevel + totalRandomBlockNum
+    const minBlockNum = gameStore.gameConfig.levelNum * gameStore.gameConfig.blockNumPerLevel + totalRandomBlockNum
     // 补齐到 blockNumUnit 的倍数
     state.totalBlockNum = minBlockNum
     if (state.totalBlockNum % blockNumUnit !== 0) {
@@ -180,7 +180,7 @@ const useGame = (emojis: string[]) => {
 
     let pos = 0
     const randomBlocks: BlockType[][] = []
-    gameConfig.randomBlocks.forEach((randomBlock, index) => {
+    gameStore.gameConfig.randomBlocks.forEach((randomBlock, index) => {
       randomBlocks[index] = []
       for (let i = 0; i < randomBlock; i++) {
         randomBlocks[index].push(allBlocks[pos])
@@ -194,10 +194,10 @@ const useGame = (emojis: string[]) => {
     // 3. 计算层级部分的块
     const levelBlocks: BlockType[] = []
     const [minX, maxX, minY, maxY] = [0, BOARD_UNIT - BLOCK_UNIT, 0, BOARD_UNIT - BLOCK_UNIT]
-    for (let i = 0; i < gameConfig.levelNum; i++) {
-      let nextBlockNum = Math.min(gameConfig.blockNumPerLevel, restBlockNum)
+    for (let i = 0; i < gameStore.gameConfig.levelNum; i++) {
+      let nextBlockNum = Math.min(gameStore.gameConfig.blockNumPerLevel, restBlockNum)
       // 最后一批，分配剩下的所有块
-      if (i === gameConfig.levelNum - 1) {
+      if (i === gameStore.gameConfig.levelNum - 1) {
         nextBlockNum = restBlockNum
       }
       // 下一次要分配的块
@@ -214,7 +214,7 @@ const useGame = (emojis: string[]) => {
     }
 
     state.levelBlocks = levelBlocks
-    state.slotBlocks = new Array<BlockType | null>(gameConfig.slotNum).fill(null)
+    state.slotBlocks = new Array<BlockType | null>(gameStore.gameConfig.slotNum).fill(null)
     state.randomBlocks = randomBlocks
   }
 
@@ -258,7 +258,7 @@ const useGame = (emojis: string[]) => {
       })
     })
     currentSlotNum = newSlotBlocks.length
-    while (newSlotBlocks.length < gameConfig.slotNum) {
+    while (newSlotBlocks.length < gameStore.gameConfig.slotNum) {
       newSlotBlocks.push(null)
     }
     state.slotBlocks = newSlotBlocks
@@ -271,7 +271,7 @@ const useGame = (emojis: string[]) => {
    * @param randomColIndex 随机区域块所在的列数
    */
   const clickBlock = (block: BlockType, randomRowIndex = -1, randomColIndex = 0) => {
-    if (currentSlotNum >= gameConfig.slotNum
+    if (currentSlotNum >= gameStore.gameConfig.slotNum
       || block.status !== BlockStatus.READY
       || block.blocksLowerThan.length > 0
       || (randomColIndex !== 0 && !state.foresee)) {
@@ -306,10 +306,10 @@ const useGame = (emojis: string[]) => {
     slotsMap.get(block.emoji)?.push(block)
 
     const arr = slotsMap.get(block.emoji)
-    if (arr && arr.length >= gameConfig.composedNum) {
+    if (arr && arr.length >= gameStore.gameConfig.composedNum) {
       // 消除成功，不可以再撤回了
       operationsStack.length = 0
-      for (let i = 0; i < gameConfig.composedNum; i++) {
+      for (let i = 0; i < gameStore.gameConfig.composedNum; i++) {
         arr.shift()
         state.disappearedBlockNum++
       }
@@ -320,11 +320,11 @@ const useGame = (emojis: string[]) => {
 
     generateSlotBlocks()
 
-    if (currentSlotNum >= gameConfig.slotNum) {
+    if (currentSlotNum >= gameStore.gameConfig.slotNum) {
       // 你输了
       state.gameStatus = GameStatus.FAILED
       dispatch(setModalContent(renderModalContent(<div i-carbon-face-dizzy-filled text-2xl></div>, t('game.failed'))))
-      dispatch(setModalCloseOnOverlayClick(false))
+      dispatch(banModalCloseOnOverlayClick())
       dispatch(openModal())
     }
     if (state.disappearedBlockNum >= state.totalBlockNum) {
@@ -377,7 +377,7 @@ const useGame = (emojis: string[]) => {
 
       if (emojiBlocks) {
         emojiBlocks.push(blocks[i])
-        if (emojiBlocks.length >= gameConfig.composedNum) {
+        if (emojiBlocks.length >= gameStore.gameConfig.composedNum) {
           operationsStack.length = 0
           emojiBlocks.forEach((block) => {
             state.disappearedBlockNum++
