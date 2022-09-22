@@ -16,6 +16,8 @@ const resolveImportGlobModule = async (modules: Record<string, ImportModuleFunct
   return loadedModules.map(module => module.default)
 }
 
+const isThursday = new Date().getDay() === 4
+
 /** 每个格子的宽高，单位 px */
 const UNIT_SIZE = 14
 
@@ -43,7 +45,12 @@ const GamePage = () => {
   const responsive = useResponsive()
 
   const loadImage = useMemoizedFn(async () => {
-    const modules = import.meta.glob<PngImageModule>('~/assets/images/emojis/*.png')
+    let modules
+    if (isThursday) {
+      modules = import.meta.glob<PngImageModule>('~/assets/images/kfc/*.png')
+    } else {
+      modules = import.meta.glob<PngImageModule>('~/assets/images/emojis/*.png')
+    }
     const images = await resolveImportGlobModule(modules)
     dispatch(setImages(images))
   })
@@ -181,7 +188,7 @@ const GamePage = () => {
                     {
                       randomBlocks.map((randomBlock, outIndex) => (
                         randomBlock.length > 0 && (
-                          <div key={outIndex} flex flex-wrap justify-center items-center gap-2 bg-teal-4 p="x1.5 y3" mx-auto rounded-2>
+                          <div key={outIndex} flex flex-wrap justify-center items-center gap-2 bg-teal-4 p="x2 y2" mx-auto rounded-2>
                             {
                               randomBlock.map((item, index) => (
                                 <button key={index} rounded-2 bg-white w-42px h-42px onClick={() => clickBlock(item, outIndex, index)} style={randomBlockStyle(index)}>

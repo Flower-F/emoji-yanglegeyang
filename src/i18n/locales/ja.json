@@ -1,9 +1,10 @@
 {
-  "title": "絵文字 ヒツジ匹",
   "header": {
     "lang": "言語の変更",
     "mode": "シェーディングテーマの切り替え",
-    "github": "Github リンク＃リンク＃"
+    "github": "Github リンク＃リンク＃",
+    "title": "絵文字 ヒツジ匹",
+    "kfc": "フライドチキン"
   },
   "footer": {
     "inspiration": "インスピレーション源",

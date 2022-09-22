@@ -1,9 +1,10 @@
 {
-  "title": "Emoji Sheep",
   "header": {
     "lang": "Change language",
     "mode": "Change dark/light mode",
-    "github": "Github link"
+    "github": "Github link",
+    "title": "Emoji Sheep",
+    "kfc": "KFC"
   },
   "footer": {
     "inspiration": "Strongly inspired by",
