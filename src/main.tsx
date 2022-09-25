@@ -5,6 +5,7 @@ import './styles/main.css'
 import ReactDOM from 'react-dom/client'
 import ReactModal from 'react-modal'
 import { BrowserRouter as Router } from 'react-router-dom'
+import { registerSW } from 'virtual:pwa-register'
 
 import App from './App'
 
@@ -14,3 +15,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <App />
   </Router>,
 )
+
+if ('serviceWorker' in navigator) {
+  registerSW()
+}

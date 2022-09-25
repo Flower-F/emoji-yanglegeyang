@@ -36,3 +36,6 @@ coverage
 
 # Visualizer
 stats.html
+
+# PWA
+dev-dist

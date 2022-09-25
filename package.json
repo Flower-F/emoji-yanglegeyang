@@ -71,6 +71,7 @@
     "unplugin-auto-import": "^0.11.2",
     "vite": "3.0.9",
     "vite-plugin-pages": "^0.26.0",
+    "vite-plugin-pwa": "^0.12.3",
     "vitest": "^0.23.2"
   }
 }
