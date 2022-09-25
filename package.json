@@ -2,10 +2,10 @@
   "name": "emoji-yanglegeyang",
   "private": true,
   "version": "0.0.1",
-  "packageManager": "pnpm@7.12.1",
+  "packageManager": "pnpm@7.12.2",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "eslint": "eslint --ext .js,.jsx,.ts,.tsx --cache --fix --quiet ./",
     "stylelint": "stylelint --fix --cache src/**/*.{scss,css}",
@@ -13,7 +13,7 @@
     "prepare": "husky install",
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "typecheck": "tsc"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.5",
@@ -34,6 +34,7 @@
     "@commitlint/config-conventional": "^17.1.0",
     "@iconify-json/carbon": "^1.1.7",
     "@iconify-json/fad": "^1.1.2",
+    "@iconify-json/ic": "^1.1.9",
     "@testing-library/react": "^13.4.0",
     "@testing-library/react-hooks": "^8.0.1",
     "@types/lodash-es": "^4.17.6",

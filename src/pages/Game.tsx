@@ -195,7 +195,9 @@ const GamePage = () => {
                                   {
                                     index === 0 || foresee
                                       ? <img src={item.emoji} w-full h-full rounded-2 alt={`Random emoji${index}`} />
-                                      : <div w-full h-full flex items-center justify-center rounded-2 bg-gray100 text="teal-9 xl" font-extrabold>?</div>
+                                      : <div w-full h-full flex items-center justify-center rounded-2 bg-gray100 text="teal-8 xl">
+                                          <div i-ic-baseline-question-mark></div>
+                                        </div>
                                     }
                                 </button>
                               ))

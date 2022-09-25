@@ -6,6 +6,7 @@ specifiers:
   '@commitlint/config-conventional': ^17.1.0
   '@iconify-json/carbon': ^1.1.7
   '@iconify-json/fad': ^1.1.2
+  '@iconify-json/ic': ^1.1.9
   '@reduxjs/toolkit': ^1.8.5
   '@testing-library/react': ^13.4.0
   '@testing-library/react-hooks': ^8.0.1
@@ -74,6 +75,7 @@ devDependencies:
   '@commitlint/config-conventional': registry.npmmirror.com/@commitlint/config-conventional/17.1.0
   '@iconify-json/carbon': registry.npmmirror.com/@iconify-json/carbon/1.1.7
   '@iconify-json/fad': registry.npmmirror.com/@iconify-json/fad/1.1.2
+  '@iconify-json/ic': registry.npmmirror.com/@iconify-json/ic/1.1.9
   '@testing-library/react': registry.npmmirror.com/@testing-library/react/13.4.0_biqbaboplfbrettd7655fr4n2y
   '@testing-library/react-hooks': registry.npmmirror.com/@testing-library/react-hooks/8.0.1_zxljzmqdrxwnuenbkrz77w74uy
   '@types/lodash-es': registry.npmmirror.com/@types/lodash-es/4.17.6
@@ -835,6 +837,14 @@ packages:
     version: 1.1.2
     dependencies:
       '@iconify/types': registry.npmmirror.com/@iconify/types/1.1.0
+    dev: true
+
+  registry.npmmirror.com/@iconify-json/ic/1.1.9:
+    resolution: {integrity: sha512-yRHx4AnNNf5kpWVnNMaeXGYnLmaR2tkGsjSc//FaI7LhljUaDkiawUvmnYbjh6M61O78EeEoNk8HgYJVqb+y8A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@iconify-json/ic/-/ic-1.1.9.tgz}
+    name: '@iconify-json/ic'
+    version: 1.1.9
+    dependencies:
+      '@iconify/types': registry.npmmirror.com/@iconify/types/2.0.0
     dev: true
 
   registry.npmmirror.com/@iconify/types/1.1.0:
