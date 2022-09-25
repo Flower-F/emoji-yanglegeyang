@@ -91,6 +91,7 @@ export default defineConfig(({ mode }) => {
         output: {
           manualChunks: {
             'react-vendor': ['react', 'react-dom'],
+            'lodash': ['lodash-es'],
           },
         },
       },
@@ -100,6 +101,8 @@ export default defineConfig(({ mode }) => {
           drop_debugger: true,
         },
       },
+      polyfillModulePreload: true,
+      cssTarget: 'chrome61',
     }
   }
 
