@@ -2,8 +2,6 @@ import { Link } from 'react-router-dom'
 
 import i18n, { resources } from '~/i18n'
 
-const isThursday = new Date().getDay() === 4
-
 const TheHeader = () => {
   const { toggleDark } = useDark()
   const { t } = useTranslation()
@@ -25,8 +23,8 @@ const TheHeader = () => {
     <header flex justify-between items-center mb-2 pb-4 text="xl black dark:neutral-2">
       <h1>
         <Link flex items-center gap-2 text-lg font-extrabold tracking-wide to="/">
-          <img src={isThursday ? '/favicon-kfc.png' : '/favicon.svg'} alt="logo" w-6 h-6 pb-1px />
-          {isThursday ? t('header.kfc') : t('header.title')}
+          <img src="/favicon.svg" alt="logo" w-6 h-6 pb-1px />
+          {t('header.title')}
         </Link>
       </h1>
 
