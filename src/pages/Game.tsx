@@ -175,7 +175,7 @@ const GamePage = () => {
                       levelBlocks.map((item, index) => (
                         item.status === BlockStatus.READY && (
                           <button absolute flex justify-center items-center rounded-2 border-teal-4 border-2 key={index} style={levelBlockStyle(item)} onClick={() => clickBlock(item)}>
-                            <img w-44px h-44px rounded-2 src={item.emoji} alt={`Layer emoji${index}`} style={levelBlockImageStyle(item)} />
+                            <img width="44px" height="44px" rounded-2 src={item.emoji} alt={`Layer emoji${index}`} style={levelBlockImageStyle(item)} />
                           </button>
                         )
                       ))
@@ -192,7 +192,7 @@ const GamePage = () => {
                                 <button key={index} rounded-2 flex justify-center items-center bg-gray100 w-42px h-42px onClick={() => clickBlock(item, outIndex, index)} style={randomBlockStyle(index)}>
                                   {
                                     index === 0 || foresee
-                                      ? <img src={item.emoji} w-42px h-42px rounded-2 alt={`Random emoji${index}`} />
+                                      ? <img src={item.emoji} width="42px" height="42px" rounded-2 alt={`Random emoji${index}`} />
                                       : <div w-full h-full flex items-center justify-center rounded-2 bg-gray100 text="teal-8 xl">
                                           <div i-ic-baseline-question-mark></div>
                                         </div>
@@ -221,7 +221,7 @@ const GamePage = () => {
                         <div key={index}>
                           {
                             <div w-40px h-40px bg-gray100 rounded-2 border-teal-4 border-2>
-                              {item ? <img src={item.emoji} w-36px h-36px rounded-2 alt={`Emoji${index}`} /> : null}
+                              {item ? <img src={item.emoji} w="36px" h="36px" rounded-2 alt={`Emoji${index}`} /> : null}
                             </div>
                           }
                         </div>

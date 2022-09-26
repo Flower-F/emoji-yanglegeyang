@@ -23,7 +23,7 @@ const TheHeader = () => {
     <header flex justify-between items-center mb-2 pb-4 text="xl black dark:neutral-2">
       <h1>
         <Link flex items-center gap-2 text-lg font-extrabold tracking-wide to="/">
-          <img src="/favicon.svg" alt="logo" w-6 h-6 pb-1px />
+          <img src="/favicon.svg" alt="logo" width="24px" height="24px" pb-1px />
           {t('header.title')}
         </Link>
       </h1>

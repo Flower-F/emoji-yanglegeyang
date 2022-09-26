@@ -164,7 +164,7 @@ const EmojiPage = () => {
                 onClick={() => selectItem({ tab, index })}
                 className={`${emojiIndex[selectedTab] === index ? 'bg-teal-3 dark:bg-teal-3' : 'bg-teal-1 dark:bg-#333'}`}
               >
-                {image && <img h-10 w-10 rounded-lg src={image} alt={tab + index} />}
+                {image && <img width="40px" height="40px" rounded-lg src={image} alt={tab + index} />}
               </button>
             ))
           ))
