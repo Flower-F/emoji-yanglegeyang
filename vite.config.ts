@@ -40,7 +40,7 @@ const pwaOptions: Partial<VitePWAOptions> = {
     ],
   },
   devOptions: {
-    enabled: true,
+    enabled: false,
   },
 }
 
