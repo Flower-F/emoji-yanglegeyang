@@ -174,7 +174,7 @@ const GamePage = () => {
                     {
                       levelBlocks.map((item, index) => (
                         item.status === BlockStatus.READY && (
-                          <button absolute flex justify-center items-center rounded-2 border-teal-4 border-2 key={index} style={levelBlockStyle(item)} onClick={() => clickBlock(item)}>
+                          <button absolute flex justify-center truncate items-center rounded-2 border-teal-4 border-2 key={index} style={levelBlockStyle(item)} onClick={() => clickBlock(item)}>
                             <img width="44px" height="44px" rounded-2 src={item.emoji} alt={`Layer emoji${index}`} style={levelBlockImageStyle(item)} />
                           </button>
                         )
@@ -189,7 +189,7 @@ const GamePage = () => {
                           <div key={outIndex} flex flex-wrap justify-center items-center gap-2 bg-teal-3 p-2 mx-auto rounded-2>
                             {
                               randomBlock.map((item, index) => (
-                                <button key={index} rounded-2 flex justify-center items-center bg-gray100 w-42px h-42px onClick={() => clickBlock(item, outIndex, index)} style={randomBlockStyle(index)}>
+                                <button key={index} rounded-2 flex justify-center items-center bg-gray100 w-42px h-42px truncate onClick={() => clickBlock(item, outIndex, index)} style={randomBlockStyle(index)}>
                                   {
                                     index === 0 || foresee
                                       ? <img src={item.emoji} width="42px" height="42px" rounded-2 alt={`Random emoji${index}`} />
@@ -220,7 +220,7 @@ const GamePage = () => {
                       slotBlocks.map((item, index) => (
                         <div key={index}>
                           {
-                            <div w-40px h-40px bg-gray100 rounded-2 border-teal-4 border-2>
+                            <div w-40px h-40px bg-gray100 rounded-2 border-teal-4 border-2 truncate>
                               {item ? <img src={item.emoji} w="36px" h="36px" rounded-2 alt={`Emoji${index}`} /> : null}
                             </div>
                           }
@@ -230,10 +230,10 @@ const GamePage = () => {
                   </div>
                   {/* 技能区 */}
                   <div flex flex-col gap-2 justify-center items-center text-teal-7>
-                    <button w-100px font-bold rounded-2 py-1 border-teal-5 border-2 onClick={shuffleSkill}>{t('game.shuffle')}</button>
-                    <button w-100px font-bold rounded-2 py-1 border-teal-5 border-2 onClick={undoSkill}>{t('game.undo')}</button>
-                    <button w-100px font-bold rounded-2 py-1 border-teal-5 border-2 onClick={foreseeSkill}>{t('game.foresee')}</button>
-                    <button w-100px font-bold rounded-2 py-1 border-teal-5 border-2 onClick={destroySkill}>{t('game.destroy')}</button>
+                    <button w-98px font-bold rounded-2 py-1 border-teal-5 border-2 onClick={shuffleSkill}>{t('game.shuffle')}</button>
+                    <button w-98px font-bold rounded-2 py-1 border-teal-5 border-2 onClick={undoSkill}>{t('game.undo')}</button>
+                    <button w-98px font-bold rounded-2 py-1 border-teal-5 border-2 onClick={foreseeSkill}>{t('game.foresee')}</button>
+                    <button w-98px font-bold rounded-2 py-1 border-teal-5 border-2 onClick={destroySkill}>{t('game.destroy')}</button>
                   </div>
                 </div>
               )

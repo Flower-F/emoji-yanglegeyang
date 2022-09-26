@@ -139,13 +139,13 @@ const EmojiPage = () => {
           tabs.map((tab, index) => (
             <button
               key={tab + index}
-              flex items-center justify-center cursor-pointer transition-colors h-16 w-16 rounded-lg
+              flex items-center justify-center cursor-pointer transition-colors h-16 w-16 rounded-lg truncate
               border="~ teal-7 dark:teal-2 op-40"
               hover="bg-teal-4 dark:bg-teal-3 border-2 border-op-90"
               onClick={() => setSelectedTab(tab)}
               className={`${tab === selectedTab ? 'bg-teal-3 dark:bg-teal-3' : 'bg-teal-1 dark:bg-#333'}`}
             >
-              {currentEmoji[tab] && <img h-12 w-12 rounded-lg src={currentEmoji[tab]} alt={tab} />}
+              {currentEmoji[tab] && <img height="48px" width="48px" rounded-lg src={currentEmoji[tab]} alt={tab} />}
             </button>
           ))
         }
@@ -158,7 +158,7 @@ const EmojiPage = () => {
             selectedTab === tab && currentImages[tab].map((image, index) => (
               <button
                 key={tab + index}
-                flex items-center justify-center cursor-pointer transition-colors h-12 w-12 rounded-lg
+                flex items-center justify-center cursor-pointer transition-colors h-12 w-12 rounded-lg truncate
                 border="~ teal-7 dark:teal-2 op-40"
                 hover="bg-teal-4 dark:bg-teal-3 border-2 border-op-90"
                 onClick={() => selectItem({ tab, index })}
