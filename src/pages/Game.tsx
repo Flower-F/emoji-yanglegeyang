@@ -19,7 +19,7 @@ const resolveImportGlobModule = async (modules: Record<string, ImportModuleFunct
 const isThursday = new Date().getDay() === 4
 
 /** 每个格子的宽高，单位 px */
-const UNIT_SIZE = 14
+const UNIT_SIZE = 16
 
 const GamePage = () => {
   const imageStore = useSelector(store => store.image)
@@ -88,7 +88,7 @@ const GamePage = () => {
 
   const levelBlockImageStyle: (item: BlockType) => CSSProperties = useMemoizedFn((item) => {
     return {
-      opacity: item.blocksLowerThan.length > 0 ? '0.5' : '1',
+      opacity: item.blocksLowerThan.length > 0 ? '0.44' : '1',
     }
   })
 
