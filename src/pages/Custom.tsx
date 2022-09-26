@@ -4,7 +4,7 @@ import { closeModal, openModal, setGameConfig, setModalContent } from '~/store'
 import type { GameConfig } from '~/types/game'
 
 const CustomPage = () => {
-  const gameStore = useSelector(store => store.persist.game)
+  const gameConfig = useSelector(store => store.persist.game.gameConfig)
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -62,21 +62,21 @@ const CustomPage = () => {
     <div flex flex-col gap-3 justify-center>
       <div flex flex-col justify-center items-center w-300px mx-auto gap-4 border-teal-6 p-4 border-2 rounded text-teal-8 dark:text-teal-2>
         <h3 font-extrabold>{t('custom.basicParams')}</h3>
-        <CustomCounter initialCount={gameStore.gameConfig.composedNum} title={t('custom.composedNum')} ref={composedNumRef} />
+        <CustomCounter initialCount={gameConfig.composedNum} title={t('custom.composedNum')} ref={composedNumRef} />
       </div>
       <div flex flex-col justify-center items-center w-300px mx-auto gap-4 border-teal-6 p-4 border-2 rounded text-teal-8 dark:text-teal-2>
         <h3 font-extrabold>{t('custom.levelArea')}</h3>
-        <CustomCounter initialCount={gameStore.gameConfig.blockNumPerLevel} title={t('custom.blockNumPerLevel')} ref={blockNumPerLevelRef} />
-        <CustomCounter initialCount={gameStore.gameConfig.levelNum} title={t('custom.levelNum')} ref={levelNumRef} />
+        <CustomCounter initialCount={gameConfig.blockNumPerLevel} title={t('custom.blockNumPerLevel')} ref={blockNumPerLevelRef} />
+        <CustomCounter initialCount={gameConfig.levelNum} title={t('custom.levelNum')} ref={levelNumRef} />
       </div>
       <div flex flex-col justify-center items-center w-300px mx-auto gap-4 border-teal-6 p-4 border-2 rounded text-teal-8 dark:text-teal-2>
         <h3 font-extrabold>{t('custom.randomArea')}</h3>
-        <CustomCounter initialCount={gameStore.gameConfig.randomBlocks.length} title={t('custom.randomAreaRowNum')} ref={randomRowNumRef} />
-        <CustomCounter initialCount={gameStore.gameConfig.randomBlocks[0] || 0} title={t('custom.randomAreaColNum')} ref={randomColNumRef} />
+        <CustomCounter initialCount={gameConfig.randomBlocks.length} title={t('custom.randomAreaRowNum')} ref={randomRowNumRef} />
+        <CustomCounter initialCount={gameConfig.randomBlocks[0] || 0} title={t('custom.randomAreaColNum')} ref={randomColNumRef} />
       </div>
       <div flex flex-col justify-center items-center w-300px mx-auto gap-4 border-teal-6 p-4 border-2 rounded text-teal-8 dark:text-teal-2>
         <h3 font-extrabold>{t('custom.slotArea')}</h3>
-        <CustomCounter initialCount={gameStore.gameConfig.slotNum} title={t('custom.slotNum')} ref={slotNumRef} />
+        <CustomCounter initialCount={gameConfig.slotNum} title={t('custom.slotNum')} ref={slotNumRef} />
       </div>
       <div flex items-center justify-center gap-3>
         <button onClick={submitParams} className="btn w-100px">

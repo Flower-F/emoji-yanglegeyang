@@ -22,8 +22,9 @@ const isThursday = new Date().getDay() === 4
 const UNIT_SIZE = 16
 
 const GamePage = () => {
-  const imageStore = useSelector(store => store.image)
-  const musicStore = useSelector(store => store.music)
+  const images = useSelector(store => store.image.images)
+  const isPlaying = useSelector(store => store.music.isPlaying)
+  const source = useSelector(store => store.music.source)
   const {
     levelBlocks,
     slotBlocks,
@@ -38,7 +39,7 @@ const GamePage = () => {
     foreseeSkill,
     undoSkill,
     destroySkill,
-  } = useGame(imageStore.images)
+  } = useGame(images)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { t } = useTranslation()
@@ -62,11 +63,11 @@ const GamePage = () => {
   }, [loadImage, startGame])
 
   useEffect(() => {
-    if (!musicStore.source) {
+    if (!source) {
       dispatch(setMusicSource(bgm))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [musicStore.source])
+  }, [source])
 
   const levelBlockStyle: (item: BlockType) => CSSProperties = useMemoizedFn((item) => {
     return {
@@ -110,7 +111,7 @@ const GamePage = () => {
       }
     } else {
       return {
-        maxWidth: '570px',
+        maxWidth: '600px',
         marginBottom: '36px',
       }
     }
@@ -127,7 +128,7 @@ const GamePage = () => {
   })
 
   const toggleMusic = useMemoizedFn(() => {
-    if (!musicStore.isPlaying) {
+    if (!isPlaying) {
       dispatch(openMusic())
     } else {
       dispatch(closeMusic())
@@ -144,8 +145,8 @@ const GamePage = () => {
         <button className="btn" p-2 rounded-full onClick={goBackHome} title={t('game.home')}>
           <div i-carbon-home w-6 h-6></div>
         </button>
-        <button className="btn" p-2 rounded-full onClick={toggleMusic} title={musicStore.isPlaying ? t('game.musicOpen') : t('game.musicClose')}>
-          {musicStore.isPlaying ? <div i-carbon-music w-6 h-6></div> : <div i-carbon-music-remove w-6 h-6></div>}
+        <button className="btn" p-2 rounded-full onClick={toggleMusic} title={isPlaying ? t('game.musicOpen') : t('game.musicClose')}>
+          {isPlaying ? <div i-carbon-music w-6 h-6></div> : <div i-carbon-music-remove w-6 h-6></div>}
         </button>
       </div>,
     ))
@@ -159,16 +160,16 @@ const GamePage = () => {
         {/* 分数 */}
         <div className="btn" cursor-none select-none>{disappearedBlockNum} / {totalBlockNum}</div>
         {/* 设置 */}
-        <button flex gap-2 text-gray100 bg-teal-6 p="x2 y1.5" rounded className="btn" title={t('game.settings')} onClick={showSettingsModal}>
+        <button flex gap-2 text-gray-1 bg-teal-6 p="x2 y1.5" rounded className="btn" title={t('game.settings')} onClick={showSettingsModal}>
           <div i-carbon-settings w-6 h-6></div>
         </button>
       </div>
       {/* 分层区和随机区域 */}
       <div mx-auto flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 style={containerStyle()}>
         {
-          gameStatus > GameStatus.READY && imageStore.images.length > 0
+          gameStatus > GameStatus.READY && images.length > 0
             ? (
-                <div border-teal-5 border-4 px-10px py-4 rounded-4 bg-teal-1>
+                <div border-teal-5 border-4 px-10px py-4 rounded-4 bg-gray-1>
                   {/* 分层部分 */}
                   <div relative style={boardStyle()}>
                     {
@@ -189,11 +190,11 @@ const GamePage = () => {
                           <div key={outIndex} flex flex-wrap justify-center items-center gap-2 bg-teal-3 p-2 mx-auto rounded-2>
                             {
                               randomBlock.map((item, index) => (
-                                <button key={index} rounded-2 flex justify-center items-center bg-gray100 w-42px h-42px truncate onClick={() => clickBlock(item, outIndex, index)} style={randomBlockStyle(index)}>
+                                <button key={index} rounded-2 flex justify-center items-center bg-gray-1 w-42px h-42px truncate onClick={() => clickBlock(item, outIndex, index)} style={randomBlockStyle(index)}>
                                   {
                                     index === 0 || foresee
                                       ? <img src={item.emoji} width="42px" height="42px" rounded-2 alt={`Random emoji${index}`} />
-                                      : <div w-full h-full flex items-center justify-center rounded-2 bg-gray100 text="teal-8 xl">
+                                      : <div w-full h-full flex items-center justify-center rounded-2 bg-gray-1 text="teal-8 xl">
                                           <div i-ic-baseline-question-mark></div>
                                         </div>
                                     }
@@ -213,14 +214,14 @@ const GamePage = () => {
         {
           gameStatus > GameStatus.READY
             ? (
-                <div flex md:flex-col gap-2 md:gap-4 bg-teal-1 p-4 rounded-4 border-teal-5 border-4>
+                <div flex md:flex-col gap-2 md:gap-4 min-w-220px bg-gray-1 p-4 rounded-4 border-teal-5 border-4>
                   {/* 槽区 */}
                   <div flex flex-wrap gap-2 justify-center items-center>
                     {
                       slotBlocks.map((item, index) => (
                         <div key={index}>
                           {
-                            <div w-40px h-40px bg-gray100 rounded-2 border-teal-4 border-2 truncate>
+                            <div w-40px h-40px bg-gray-1 rounded-2 border-teal-4 border-2 truncate>
                               {item ? <img src={item.emoji} w="36px" h="36px" rounded-2 alt={`Emoji${index}`} /> : null}
                             </div>
                           }

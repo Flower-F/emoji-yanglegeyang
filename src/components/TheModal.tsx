@@ -23,7 +23,10 @@ const modalStyles: ReactModal.Styles = {
 }
 
 const TheModal = () => {
-  const modalStore = useSelector(store => store.modal)
+  const content = useSelector(store => store.modal.content)
+  const isOpen = useSelector(store => store.modal.isOpen)
+  const closeOnOverlayClick = useSelector(store => store.modal.closeOnOverlayClick)
+
   const dispatch = useDispatch()
 
   const close = useMemoizedFn(() => {
@@ -32,10 +35,10 @@ const TheModal = () => {
 
   return (
     <ReactModal
-      isOpen={modalStore.isOpen}
+      isOpen={isOpen}
       style={modalStyles}
       closeTimeoutMS={80}
-      shouldCloseOnOverlayClick={modalStore.closeOnOverlayClick}
+      shouldCloseOnOverlayClick={closeOnOverlayClick}
       onRequestClose={close}
       preventScroll={true}
     >
@@ -43,7 +46,7 @@ const TheModal = () => {
         <div text-end border-b mb-2>
           <button text="teal-8 3xl hover:teal-7" font-extrabold i-carbon-close onClick={close}></button>
         </div>
-        {modalStore.content}
+        {content}
       </div>
     </ReactModal>
   )
