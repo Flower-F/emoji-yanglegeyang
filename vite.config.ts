@@ -18,7 +18,7 @@ const pwaOptions: Partial<VitePWAOptions> = {
   manifest: {
     name: '表了个情',
     short_name: '表了个情',
-    theme_color: '#ffffff',
+    theme_color: '#00aba9',
     display: 'standalone',
     icons: [
       {

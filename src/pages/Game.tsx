@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react'
 
 import bgm from '~/assets/music/bgm.mp3'
 import ComLoading from '~/components/ComLoading'
-import { BLOCK_UNIT, BlockStatus, BOARD_UNIT, GameStatus } from '~/constants'
+import { BlockStatus, BOARD_UNIT, GameStatus } from '~/constants'
 import useGame from '~/hooks/useGame'
 import { closeModal, closeMusic, openModal, openMusic, setImages, setModalContent, setMusicSource } from '~/store'
 import type { BlockType } from '~/types/block'
@@ -75,8 +75,6 @@ const GamePage = () => {
       top: `${item.y * UNIT_SIZE}px`,
       backgroundColor: item.blocksLowerThan.length > 0 ? '#707c69' : 'rgba(243, 244, 246, var(--un-bg-opacity))',
       cursor: item.blocksLowerThan.length > 0 ? 'not-allowed' : 'pointer',
-      width: `${UNIT_SIZE * BLOCK_UNIT}px`,
-      height: `${UNIT_SIZE * BLOCK_UNIT}px`,
     }
   })
 
@@ -112,7 +110,7 @@ const GamePage = () => {
       }
     } else {
       return {
-        maxWidth: '580px',
+        maxWidth: '570px',
         marginBottom: '36px',
       }
     }
@@ -177,7 +175,7 @@ const GamePage = () => {
                       levelBlocks.map((item, index) => (
                         item.status === BlockStatus.READY && (
                           <button absolute flex justify-center items-center rounded-2 border-teal-4 border-2 key={index} style={levelBlockStyle(item)} onClick={() => clickBlock(item)}>
-                            <img w-full h-full rounded-2 src={item.emoji} alt={`Layer emoji${index}`} style={levelBlockImageStyle(item)} />
+                            <img w-44px h-44px rounded-2 src={item.emoji} alt={`Layer emoji${index}`} style={levelBlockImageStyle(item)} />
                           </button>
                         )
                       ))
@@ -194,7 +192,7 @@ const GamePage = () => {
                                 <button key={index} rounded-2 flex justify-center items-center bg-gray100 w-42px h-42px onClick={() => clickBlock(item, outIndex, index)} style={randomBlockStyle(index)}>
                                   {
                                     index === 0 || foresee
-                                      ? <img src={item.emoji} w-full h-full rounded-2 alt={`Random emoji${index}`} />
+                                      ? <img src={item.emoji} w-42px h-42px rounded-2 alt={`Random emoji${index}`} />
                                       : <div w-full h-full flex items-center justify-center rounded-2 bg-gray100 text="teal-8 xl">
                                           <div i-ic-baseline-question-mark></div>
                                         </div>
@@ -222,8 +220,8 @@ const GamePage = () => {
                       slotBlocks.map((item, index) => (
                         <div key={index}>
                           {
-                            <div w-10 h-10 bg-gray100 rounded-2 border-teal-4 border-2>
-                              {item ? <img src={item.emoji} w-full h-full rounded-2 alt={`Emoji${index}`} /> : null}
+                            <div w-40px h-40px bg-gray100 rounded-2 border-teal-4 border-2>
+                              {item ? <img src={item.emoji} w-36px h-36px rounded-2 alt={`Emoji${index}`} /> : null}
                             </div>
                           }
                         </div>
